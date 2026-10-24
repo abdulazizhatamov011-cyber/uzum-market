@@ -1,6 +1,7 @@
 // "Nestle Baby&Me"dan aksiya — uzum.uz/uz/category/nestle-babymedan-aksiya--1561 sahifasidagi tovarlar
 import type { Product } from "./types";
 import raw from "./promo-nestle.json";
+import gallery from "./promo-nestle-gallery.json";
 
 type Raw = (typeof raw)[number];
 
@@ -50,12 +51,19 @@ function ageOf(title: string, brand: string) {
   return "0-2 yil";
 }
 
+// Uzum'dagi 1-rasm aksiya ramkasi (hammasida bir xil ko'rinadi), shuning uchun kartochkada
+// mahsulotning o'z fotosini ko'rsatamiz; ramkali rasm galereyaning oxirida qoladi
+const img = (key: string, size: "540" | "high") =>
+  `https://images.uzum.uz/${key}/${size === "540" ? "t_product_540_high" : "t_product_high"}.jpg`;
+
 function toProduct(r: Raw): Product {
   const brand = brandOf(r.title);
+  const keys = (gallery as Record<string, string[]>)[r.id] ?? [];
   return {
     ...r,
     category: "bolalar",
-    images: [r.image.replace("t_product_540_high", "t_product_high")],
+    image: keys.length ? img(keys[0], "540") : r.image,
+    images: keys.length ? keys.map((k) => img(k, "high")) : [r.image],
     brand,
     stock: 50 + (r.id % 450),
     subcategory: subcategoryOf(r.title, brand),
