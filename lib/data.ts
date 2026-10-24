@@ -1,7 +1,8 @@
 import type { Category } from "./types";
-import { products } from "./products";
+import { products as baseProducts } from "./products";
+import { nestleProducts } from "./promo";
 
-export { products };
+export const products = [...baseProducts, ...nestleProducts];
 
 export const categories: Category[] = [
   { slug: "elektronika", name: "Elektronika", icon: "📱" },
@@ -15,6 +16,7 @@ export const categories: Category[] = [
   { slug: "oziq-ovqat", name: "Oziq-ovqat mahsulotlari", icon: "🛒" },
   { slug: "sport", name: "Sport va hordiq", icon: "⚽" },
   { slug: "hayvonlar", name: "Uy hayvonlari uchun", icon: "🐾" },
+  { slug: "bolalar", name: "Bolalar tovarlari", icon: "🧸" },
 ];
 
 export const navLinks = [
@@ -30,7 +32,7 @@ export const navLinks = [
 ];
 
 // Banner bosilganda ochiladigan sahifa
-const BANNER_LINK = "https://uzum.uz/uz/category/nestle-babymedan-aksiya--1561";
+const BANNER_LINK = "/promo/nestle-baby-me";
 
 // Uzum Market bosh sahifasidagi bannerlar (1350×450)
 export const banners = [

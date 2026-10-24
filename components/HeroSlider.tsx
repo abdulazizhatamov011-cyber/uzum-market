@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { banners } from "@/lib/data";
 import { ChevronLeft, ChevronRight } from "./Icons";
@@ -37,14 +38,7 @@ export default function HeroSlider() {
         style={{ transform: `translateX(-${i * 100}%)` }}
       >
         {banners.map((b, k) => (
-          <a
-            key={b.image}
-            href={b.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="min-w-full h-full"
-            tabIndex={k === i ? 0 : -1}
-          >
+          <Link key={b.image} href={b.href} className="min-w-full h-full" tabIndex={k === i ? 0 : -1}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={b.image}
@@ -54,7 +48,7 @@ export default function HeroSlider() {
               draggable={false}
               className="w-full h-full object-cover select-none"
             />
-          </a>
+          </Link>
         ))}
       </div>
 

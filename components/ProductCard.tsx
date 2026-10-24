@@ -21,12 +21,22 @@ export default function ProductCard({ product: p }: { product: Product }) {
           loading="lazy"
           className="w-full h-full object-contain p-3 transition-transform duration-300 group-hover:scale-105"
         />
-        {discount >= 30 && (
+        {p.original && (
+          <span className="absolute left-2 top-2 rounded-md bg-[#e3f8ec] text-[#00a94f] text-[10px] font-bold px-1.5 py-0.5">
+            ORIGINAL
+          </span>
+        )}
+        {p.guarantee && (
+          <span className="absolute left-2 bottom-2 rounded-md bg-[#ff2e7e] text-white text-[11px] font-semibold px-1.5 py-0.5">
+            ARZON NARX KAFOLATI
+          </span>
+        )}
+        {p.guarantee === undefined && discount >= 30 && (
           <span className="absolute left-2 bottom-2 rounded-md bg-brand text-white text-[11px] font-semibold px-1.5 py-0.5">
             ARZON NARX KAFOLATI
           </span>
         )}
-        {discount < 30 && discount >= 15 && (
+        {!p.guarantee && discount < 30 && discount >= 15 && (
           <span className="absolute left-2 bottom-2 rounded-md bg-[#ff4d6a] text-white text-[11px] font-semibold px-1.5 py-0.5">
             −{discount}%
           </span>

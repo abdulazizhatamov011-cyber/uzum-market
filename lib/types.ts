@@ -10,6 +10,12 @@ export type Product = {
   images: string[];
   brand: string | null;
   stock: number;
+  // Aksiya sahifalaridagi mahsulotlar uchun qo'shimcha belgilar
+  original?: boolean;
+  guarantee?: boolean;
+  subcategory?: string;
+  age?: string;
+  country?: string;
 };
 
 export type Category = {
