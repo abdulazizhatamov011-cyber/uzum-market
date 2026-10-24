@@ -6,74 +6,87 @@ import { formatPrice, monthly } from "@/lib/data";
 import { useStore } from "./StoreProvider";
 import { CartPlusIcon, HeartIcon, StarIcon } from "./Icons";
 
-export default function ProductCard({ product: p }: { product: Product }) {
+export default function ProductCard({ product: p, compact }: { product: Product; compact?: boolean }) {
   const { addToCart, toggleFavorite, isFavorite } = useStore();
   const fav = isFavorite(p.id);
   const discount = Math.round((1 - p.price / p.oldPrice) * 100);
+  // Uzum rasmlari 3:4 formatda — kartochkani to'liq egallaydi; boshqalari ichiga sig'diriladi
+  const fullBleed = p.image.includes("images.uzum.uz");
+  const guarantee = p.guarantee ?? discount >= 30;
 
   return (
-    <div className="group relative flex flex-col rounded-xl transition hover:shadow-[0_6px_24px_rgba(0,0,0,0.08)]">
+    <div className="group relative flex flex-col">
       <Link href={`/product/${p.id}`} className="relative block aspect-[3/4] rounded-xl overflow-hidden bg-[#f2f4f7]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={p.image}
           alt={p.title}
           loading="lazy"
-          className="w-full h-full object-contain p-3 transition-transform duration-300 group-hover:scale-105"
+          className={`w-full h-full transition-transform duration-300 group-hover:scale-105 ${
+            fullBleed ? "object-cover" : "object-contain p-3"
+          }`}
         />
-        {p.original && (
-          <span className="absolute left-2 top-2 rounded-md bg-[#e3f8ec] text-[#00a94f] text-[10px] font-bold px-1.5 py-0.5">
-            ORIGINAL
-          </span>
-        )}
-        {p.guarantee && (
-          <span className="absolute left-2 bottom-2 rounded-md bg-[#ff2e7e] text-white text-[11px] font-semibold px-1.5 py-0.5">
-            ARZON NARX KAFOLATI
-          </span>
-        )}
-        {p.guarantee === undefined && discount >= 30 && (
-          <span className="absolute left-2 bottom-2 rounded-md bg-brand text-white text-[11px] font-semibold px-1.5 py-0.5">
-            ARZON NARX KAFOLATI
-          </span>
-        )}
-        {!p.guarantee && discount < 30 && discount >= 15 && (
-          <span className="absolute left-2 bottom-2 rounded-md bg-[#ff4d6a] text-white text-[11px] font-semibold px-1.5 py-0.5">
-            −{discount}%
-          </span>
-        )}
+        <div className="absolute left-1.5 right-1.5 bottom-1.5 flex flex-col items-start gap-1">
+          {p.original && (
+            <span className="flex items-center gap-1 rounded-md bg-white text-ink text-[10px] font-semibold px-1.5 py-0.5 shadow-sm">
+              <CheckBadge /> ORIGINAL
+            </span>
+          )}
+          {guarantee ? (
+            <span className="max-w-full truncate whitespace-nowrap rounded-md bg-[#ff2e7e] text-white text-[10px] font-bold px-1.5 py-0.5">ARZON NARX KAFOLATI</span>
+          ) : (
+            discount >= 15 && (
+              <span className="rounded-md bg-[#ff2e7e] text-white text-[11px] font-bold px-1.5 py-0.5">−{discount}%</span>
+            )
+          )}
+        </div>
       </Link>
       <button
         aria-label="Saralanganlarga qo'shish"
         onClick={() => toggleFavorite(p.id)}
-        className={`absolute top-2 right-2 w-8 h-8 grid place-items-center rounded-full ${
-          fav ? "text-brand" : "text-ink/70 hover:text-brand"
+        className={`absolute top-1.5 right-1.5 w-8 h-8 grid place-items-center rounded-full bg-white/60 backdrop-blur-sm ${
+          fav ? "text-brand" : "text-ink/80 hover:text-brand"
         }`}
       >
-        <HeartIcon filled={fav} />
+        <HeartIcon filled={fav} className="w-[18px] h-[18px]" />
       </button>
 
-      <div className="flex flex-col flex-1 px-1.5 pt-2 pb-2">
-        <div className="flex items-baseline gap-2">
-          <span className="font-bold text-[15px]">{formatPrice(p.price)} so&apos;m</span>
-        </div>
-        <span className="text-xs text-muted line-through">{formatPrice(p.oldPrice)} so&apos;m</span>
-        <span className="mt-1 self-start rounded bg-[#ffff00] px-1 text-[12px] font-medium">
-          {formatPrice(monthly(p.price))} so&apos;m/oyiga
+      <div className="flex flex-col flex-1 px-1 pt-2">
+        <span className="font-semibold text-[15px] sm:text-base leading-tight">{formatPrice(p.price)}</span>
+        <span className="text-[12px] text-muted leading-tight mt-0.5">{formatPrice(p.oldPrice)}</span>
+        <span className="mt-1 self-start rounded bg-[#ffff00] px-1 text-[12px] leading-[18px]">
+          {formatPrice(monthly(p.price))} so&apos;mdan
         </span>
-        <Link href={`/product/${p.id}`} className="mt-1.5 text-[13px] leading-snug line-clamp-2 hover:text-brand">
+        <Link
+          href={`/product/${p.id}`}
+          className={`mt-1 text-[13px] leading-[1.35] hover:text-brand ${compact ? "line-clamp-2 min-h-[35px]" : "line-clamp-2"}`}
+        >
           {p.title}
         </Link>
-        <div className="mt-1 flex items-center gap-1 text-[12px] text-muted">
-          <StarIcon /> {p.rating.toFixed(1)} ({formatPrice(p.reviews)} sharhlar)
-        </div>
-        <div className="flex-1 min-h-3" />
+        {!compact && (
+          <div className="mt-0.5 flex items-center gap-1 text-[12px] text-muted">
+            <StarIcon /> {p.rating.toFixed(1)} ({formatPrice(p.reviews)} sharhlar)
+          </div>
+        )}
+        <div className="flex-1 min-h-2" />
         <button
           onClick={() => addToCart(p.id)}
-          className="h-9 rounded-lg bg-brand text-white text-sm font-medium flex items-center justify-center gap-1.5 hover:bg-brand-dark active:scale-[0.98] transition"
+          className={`h-9 rounded-lg text-sm font-medium flex items-center justify-center gap-1.5 active:scale-[0.98] transition ${
+            compact ? "bg-brand-soft text-brand hover:bg-[#e2d4ff]" : "bg-brand text-white hover:bg-brand-dark"
+          }`}
         >
           <CartPlusIcon /> Ertaga
         </button>
       </div>
     </div>
+  );
+}
+
+function CheckBadge() {
+  return (
+    <svg viewBox="0 0 16 16" className="w-3 h-3" aria-hidden>
+      <circle cx="8" cy="8" r="8" fill="#00a94f" />
+      <path d="M4.5 8.2l2.3 2.3 4.7-4.8" fill="none" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
   );
 }

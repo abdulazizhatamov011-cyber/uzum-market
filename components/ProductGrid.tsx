@@ -8,7 +8,7 @@ export default function ProductGrid({ items, step = 0 }: { items: Product[]; ste
   const [shown, setShown] = useState(step || items.length);
   return (
     <>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-4 gap-y-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-2 gap-y-5 sm:gap-x-4 sm:gap-y-6">
         {items.slice(0, shown).map((p) => (
           <ProductCard key={p.id} product={p} />
         ))}

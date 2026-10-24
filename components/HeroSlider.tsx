@@ -6,6 +6,17 @@ import { banners } from "@/lib/data";
 import { ChevronLeft, ChevronRight } from "./Icons";
 
 export default function HeroSlider() {
+  return (
+    <>
+      <MobileBanners />
+      <div className="hidden md:block">
+        <DesktopSlider />
+      </div>
+    </>
+  );
+}
+
+function DesktopSlider() {
   const [i, setI] = useState(0);
   const [paused, setPaused] = useState(false);
   const touchX = useRef<number | null>(null);
@@ -77,6 +88,46 @@ export default function HeroSlider() {
           />
         ))}
       </div>
+    </div>
+  );
+}
+
+// Telefonda: kartalar yonma-yon, chetida keyingisi ko'rinib turadi, barmoq bilan suriladi
+function MobileBanners() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    if (paused) return;
+    const t = setInterval(() => {
+      const el = ref.current;
+      if (!el || !el.firstElementChild) return;
+      const step = (el.firstElementChild as HTMLElement).offsetWidth + 8;
+      const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 4;
+      el.scrollTo({ left: atEnd ? 0 : el.scrollLeft + step, behavior: "smooth" });
+    }, 5000);
+    return () => clearInterval(t);
+  }, [paused]);
+
+  return (
+    <div
+      ref={ref}
+      onTouchStart={() => setPaused(true)}
+      className="md:hidden -mx-4 flex gap-2 overflow-x-auto no-scrollbar snap-x snap-mandatory px-[5.5%]"
+    >
+      {banners.map((b, k) => (
+        <Link key={b.image} href={b.href} className="shrink-0 w-[89%] snap-center">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={b.image}
+            alt="Uzum aksiyalari, mahsulotlar termasi va xabarlari"
+            referrerPolicy="no-referrer"
+            loading={k < 2 ? "eager" : "lazy"}
+            draggable={false}
+            className="w-full aspect-[3/1] rounded-xl object-cover bg-[#f2f4f7]"
+          />
+        </Link>
+      ))}
     </div>
   );
 }

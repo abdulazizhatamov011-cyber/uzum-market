@@ -5,6 +5,7 @@ import { StoreProvider } from "@/components/StoreProvider";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import MobileNav from "@/components/MobileNav";
+import AppBanner from "@/components/AppBanner";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -21,6 +22,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="uz" className={`${inter.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         <StoreProvider>
+          <AppBanner />
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />

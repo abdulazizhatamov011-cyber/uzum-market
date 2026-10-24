@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Ekrandagi Next.js "N" belgisi telefonda pastki menyuni to'sib qo'yadi
+  devIndicators: false,
   cacheComponents: true,
   partialPrefetching: true,
   turbopack: {

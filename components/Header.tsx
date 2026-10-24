@@ -161,7 +161,8 @@ export default function Header() {
     <header className="sticky top-0 z-30 bg-white">
       <TopBar />
       <div className="relative">
-        <div className="container-x flex items-center gap-4 h-[72px]">
+        <MobileHeader q={q} setQ={setQ} submit={submit} />
+        <div className="container-x hidden md:flex items-center gap-4 h-[72px]">
           <Logo />
           <button
             onClick={() => setOpen((o) => !o)}
@@ -212,6 +213,83 @@ export default function Header() {
         {open && <CatalogMenu onClose={() => setOpen(false)} />}
       </div>
     </header>
+  );
+}
+
+function MobileHeader({
+  q,
+  setQ,
+  submit,
+}: {
+  q: string;
+  setQ: (v: string) => void;
+  submit: (e: React.FormEvent) => void;
+}) {
+  const { city, setCity, favorites } = useStore();
+  const [picker, setPicker] = useState(false);
+  return (
+    <div className="md:hidden px-4 pt-2 pb-2.5">
+      <div className="flex items-center justify-between h-8">
+        <button onClick={() => setPicker(true)} className="flex items-center gap-1 font-medium text-[15px]">
+          <PinIcon className="w-5 h-5" /> {city} <ChevronDown className="w-4 h-4" />
+        </button>
+        <span className="text-[13px] text-muted">yetkazib beriladigan shahar</span>
+      </div>
+      <div className="flex items-center gap-3 mt-2">
+        <form onSubmit={submit} className="flex flex-1 items-center gap-2 h-10 rounded-xl bg-[#eef0f4] px-3">
+          <SearchIcon className="w-5 h-5 text-ink/80 shrink-0" />
+          <input
+            type="search"
+            enterKeyHint="search"
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder="Mahsulotlar va turkumlar izlash"
+            className="flex-1 min-w-0 bg-transparent text-[15px] outline-none placeholder:text-muted"
+          />
+        </form>
+        <Link href="/favorites" aria-label="Saralangan" className="relative">
+          <HeartIcon className="w-6 h-6" />
+          {favorites.length > 0 && (
+            <span className="absolute -top-1.5 -right-2 min-w-[18px] h-[18px] px-1 rounded-md bg-brand text-white text-[11px] grid place-items-center">
+              {favorites.length}
+            </span>
+          )}
+        </Link>
+      </div>
+
+      {picker && (
+        <div className="fixed inset-0 z-50 flex items-end bg-black/40" onClick={() => setPicker(false)}>
+          <div
+            className="w-full max-h-[75vh] overflow-y-auto rounded-t-2xl bg-white p-4 pb-8"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-line" />
+            <div className="flex items-center justify-between mb-2">
+              <span className="font-semibold text-lg">Shaharni tanlang</span>
+              <button aria-label="Yopish" onClick={() => setPicker(false)}>
+                <CloseIcon />
+              </button>
+            </div>
+            <p className="text-sm text-muted mb-3">Tovarlar assortimenti va yetkazib berish shaharga bog&apos;liq</p>
+            {cities.map((c) => (
+              <button
+                key={c}
+                onClick={() => {
+                  setCity(c);
+                  setPicker(false);
+                }}
+                className={`flex w-full items-center justify-between py-3 border-b border-line text-left ${
+                  c === city ? "text-brand font-medium" : ""
+                }`}
+              >
+                {c}
+                {c === city && <span>✓</span>}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 

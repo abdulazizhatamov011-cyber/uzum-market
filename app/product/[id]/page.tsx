@@ -32,7 +32,7 @@ async function ProductContent({ params }: { params: Promise<{ id: string }> }) {
 
   return (
     <div className="container-x pt-4">
-      <nav className="text-sm text-muted flex gap-2 mb-4">
+      <nav className="hidden md:flex text-sm text-muted gap-2 mb-4">
         <Link href="/" className="hover:text-ink">Bosh sahifa</Link>/
         {category && (
           <>
