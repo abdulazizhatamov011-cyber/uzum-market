@@ -29,7 +29,7 @@ export default function SellerPage() {
             ))}
           </div>
         </div>
-        <ApplicationForm extraLabel="Do'kon nomi yoki STIR" />
+        <ApplicationForm kind="seller" extraLabel="Do'kon nomi yoki STIR" />
       </div>
     </PageShell>
   );

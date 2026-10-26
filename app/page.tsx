@@ -2,16 +2,9 @@ import Link from "next/link";
 import HeroSlider from "@/components/HeroSlider";
 import ProductGrid from "@/components/ProductGrid";
 import WeeklyDeals from "@/components/WeeklyDeals";
-import { categories, products } from "@/lib/data";
-import { nestleProducts } from "@/lib/promo";
-
-// Deterministik "aralashtirish" — server va client bir xil natija beradi
-const shuffled = [...products].sort((a, b) => ((a.id * 37) % 51) - ((b.id * 37) % 51));
-const popular = shuffled.slice(0, 10);
-const discounted = [...products]
-  .sort((a, b) => b.oldPrice / b.price - a.oldPrice / a.price)
-  .slice(0, 10);
-const weekly = [...nestleProducts].sort((a, b) => b.reviews - a.reviews).slice(0, 10);
+import { categories, categoryCover } from "@/lib/data";
+import CategoryThumb from "@/components/CategoryThumb";
+import { getCatalog } from "@/lib/catalog";
 
 function SectionTitle({ title, href }: { title: string; href: string }) {
   return (
@@ -24,7 +17,17 @@ function SectionTitle({ title, href }: { title: string; href: string }) {
   );
 }
 
-export default function Home() {
+export default async function Home() {
+  const { products } = await getCatalog();
+  // Deterministik "aralashtirish" — server va client bir xil natija beradi
+  const shuffled = [...products].sort((a, b) => ((a.id * 37) % 51) - ((b.id * 37) % 51));
+  const popular = shuffled.slice(0, 10);
+  const discounted = [...products].sort((a, b) => b.oldPrice / b.price - a.oldPrice / a.price).slice(0, 10);
+  const weekly = products
+    .filter((p) => p.promo === "nestle-baby-me")
+    .sort((a, b) => b.reviews - a.reviews)
+    .slice(0, 10);
+
   return (
     <div className="container-x pt-3 md:pt-1">
       <HeroSlider />
@@ -34,10 +37,12 @@ export default function Home() {
         <ul className="flex gap-3 sm:gap-5 overflow-x-auto no-scrollbar px-4 md:px-0 md:justify-between">
           {categories.map((c) => (
             <li key={c.slug} className="shrink-0">
-              <Link href={`/category/${c.slug}`} className="group flex w-[68px] flex-col items-center gap-1.5 text-center">
-                <span className="grid place-items-center w-[60px] h-[60px] rounded-full bg-surface text-[28px] transition group-hover:bg-brand-soft">
-                  {c.icon}
-                </span>
+              <Link href={`/category/${c.slug}`} className="group flex w-[72px] sm:w-[84px] flex-col items-center gap-1.5 text-center">
+                <CategoryThumb
+                  c={c}
+                  src={categoryCover(c, products)}
+                  className="w-[64px] h-[64px] sm:w-[76px] sm:h-[76px] rounded-full ring-2 ring-transparent transition group-hover:ring-brand"
+                />
                 <span className="text-[12px] leading-tight line-clamp-2">{c.name}</span>
               </Link>
             </li>

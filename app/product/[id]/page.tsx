@@ -1,17 +1,20 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
-import { getCategory, getProduct, products } from "@/lib/data";
+import { getCategory } from "@/lib/data";
+import { getCatalog, getProductById } from "@/lib/catalog";
 import ProductDetails from "./ProductDetails";
 import ProductGrid from "@/components/ProductGrid";
 
-export function generateStaticParams() {
+// Mavjud tovarlar oldindan tayyorlanadi; admin keyin qo'shgan tovarlar birinchi ochilganda tayyorlanadi
+export async function generateStaticParams() {
+  const { products } = await getCatalog();
   return products.map((p) => ({ id: String(p.id) }));
 }
 
 export async function generateMetadata({ params }: PageProps<"/product/[id]">) {
   const { id } = await params;
-  const p = getProduct(Number(id));
+  const p = await getProductById(Number(id));
   return { title: p ? `${p.title} — Bozorcha` : "Mahsulot topilmadi" };
 }
 
@@ -25,7 +28,8 @@ export default function ProductPage({ params }: PageProps<"/product/[id]">) {
 
 async function ProductContent({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const product = getProduct(Number(id));
+  const { products } = await getCatalog();
+  const product = products.find((p) => p.id === Number(id));
   if (!product) notFound();
   const category = getCategory(product.category);
   const similar = products.filter((p) => p.category === product.category && p.id !== product.id).slice(0, 10);

@@ -22,7 +22,7 @@ export default function ContactPage() {
             </div>
           ))}
         </div>
-        <ApplicationForm extraLabel="Savolingiz yoki buyurtma raqami" button="Xabar yuborish" />
+        <ApplicationForm kind="contact" extraLabel="Savolingiz yoki buyurtma raqami" button="Xabar yuborish" />
       </div>
     </PageShell>
   );

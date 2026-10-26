@@ -3,10 +3,12 @@
 import Link from "next/link";
 import { useStore } from "@/components/StoreProvider";
 import { TrashIcon } from "@/components/Icons";
-import { formatPrice, getProduct } from "@/lib/data";
+import { formatPrice } from "@/lib/data";
+import { useCatalog } from "@/components/CatalogProvider";
 
 export default function CartPage() {
   const { cart, setQty, removeFromCart } = useStore();
+  const { getProduct } = useCatalog();
   const rows = cart.flatMap((i) => {
     const p = getProduct(i.id);
     return p ? [{ ...i, p }] : [];

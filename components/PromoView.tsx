@@ -117,7 +117,7 @@ export default function PromoView({
       </nav>
 
       <div className="grid gap-8 md:grid-cols-[230px_1fr]">
-        <aside className="hidden md:block">{filters}</aside>
+        <aside className="hidden md:block sticky top-[172px] self-start max-h-[calc(100vh-188px)] overflow-y-auto overscroll-contain pr-2 [scrollbar-width:thin]">{filters}</aside>
 
         <div className="min-w-0">
           <div className="text-[15px] mb-3">

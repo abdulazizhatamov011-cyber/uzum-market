@@ -3,10 +3,11 @@
 import Link from "next/link";
 import { useStore } from "@/components/StoreProvider";
 import ProductGrid from "@/components/ProductGrid";
-import { products } from "@/lib/data";
+import { useCatalog } from "@/components/CatalogProvider";
 
 export default function FavoritesPage() {
   const { favorites } = useStore();
+  const { products } = useCatalog();
   const items = products.filter((p) => favorites.includes(p.id));
 
   return (

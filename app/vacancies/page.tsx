@@ -26,7 +26,7 @@ export default function VacanciesPage() {
             </a>
           ))}
         </div>
-        <ApplicationForm extraLabel="Qaysi vakansiya qiziqtiradi?" />
+        <ApplicationForm kind="job" extraLabel="Qaysi vakansiya qiziqtiradi?" />
       </div>
     </PageShell>
   );

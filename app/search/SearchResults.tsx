@@ -2,9 +2,11 @@
 
 import { useSearchParams } from "next/navigation";
 import CatalogView from "@/components/CatalogView";
-import { categories, products } from "@/lib/data";
+import { categories } from "@/lib/data";
+import { useCatalog } from "@/components/CatalogProvider";
 
 export default function SearchResults() {
+  const { products } = useCatalog();
   const q = (useSearchParams().get("q") ?? "").trim().toLowerCase();
   const items = q
     ? products.filter((p) => {

@@ -31,7 +31,7 @@ export default function OpenPickupPointPage() {
             <li>Odamlar ko&apos;p yuradigan joy</li>
           </ul>
         </div>
-        <ApplicationForm extraLabel="Taxminiy manzil" />
+        <ApplicationForm kind="pickup" extraLabel="Taxminiy manzil" />
       </div>
     </PageShell>
   );

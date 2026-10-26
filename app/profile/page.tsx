@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useStore } from "@/components/StoreProvider";
 import PageShell, { EmptyState } from "@/components/PageShell";
+import { BagIcon, HeartIcon, PinIcon } from "@/components/Icons";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -18,10 +19,10 @@ export default function ProfilePage() {
   }
 
   const cards = [
-    { href: "/orders", icon: "📦", title: "Buyurtmalarim", value: `${orders.length} ta` },
-    { href: "/favorites", icon: "💜", title: "Saralangan", value: `${favorites.length} ta` },
-    { href: "/cart", icon: "🛍️", title: "Savat", value: `${cartCount} ta` },
-    { href: "/pickup-points", icon: "📍", title: "Topshirish punktlari", value: "Xaritada" },
+    { href: "/orders", icon: <BoxIcon />, tone: "bg-brand-soft text-brand-dark", title: "Buyurtmalarim", value: `${orders.length} ta` },
+    { href: "/favorites", icon: <HeartIcon className="w-6 h-6" />, tone: "bg-[#fde8ee] text-sale", title: "Saralangan", value: `${favorites.length} ta` },
+    { href: "/cart", icon: <BagIcon className="w-6 h-6" />, tone: "bg-surface text-cobalt", title: "Savat", value: `${cartCount} ta` },
+    { href: "/pickup-points", icon: <PinIcon className="w-6 h-6" />, tone: "bg-[#e3f8ec] text-[#15803d]", title: "Topshirish punktlari", value: "Xaritada" },
   ];
 
   return (
@@ -46,13 +47,24 @@ export default function ProfilePage() {
       </div>
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
         {cards.map((c) => (
-          <Link key={c.href} href={c.href} className="rounded-2xl border border-line p-5 hover:shadow-md transition">
-            <div className="text-3xl">{c.icon}</div>
+          <Link key={c.href} href={c.href} className="rounded-[20px] border border-line p-5 hover:border-[#c9d4e8] transition">
+            <span className={`grid place-items-center w-12 h-12 rounded-2xl ${c.tone}`}>{c.icon}</span>
             <div className="mt-3 font-semibold">{c.title}</div>
             <div className="text-sm text-muted">{c.value}</div>
           </Link>
         ))}
       </div>
     </PageShell>
+  );
+}
+
+// Buyurtma qutisi (boshqa ikonkalar bilan bir xil chiziq qalinligida)
+function BoxIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" aria-hidden>
+      <path d="M3.5 7.5 12 3l8.5 4.5v9L12 21l-8.5-4.5z" />
+      <path d="M3.5 7.5 12 12l8.5-4.5M12 12v9" />
+      <path d="m7.8 5.3 8.5 4.5" />
+    </svg>
   );
 }

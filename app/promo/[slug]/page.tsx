@@ -2,8 +2,10 @@ import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import PromoView from "@/components/PromoView";
 import { nestleAges, nestlePromo, nestleSubcategories } from "@/lib/promo";
+import { getCatalog } from "@/lib/catalog";
 
-const promos = [nestlePromo];
+// Aksiya tovarlari bazadan olinadi (promo maydoni shu aksiyaga teng bo'lganlari)
+const promos = [{ slug: nestlePromo.slug, title: nestlePromo.title }];
 
 export function generateStaticParams() {
   return promos.map((p) => ({ slug: p.slug }));
@@ -27,12 +29,13 @@ async function PromoContent({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const promo = promos.find((p) => p.slug === slug);
   if (!promo) notFound();
+  const items = (await getCatalog()).products.filter((p) => p.promo === promo.slug);
   return (
     <PromoView
       title={promo.title}
-      items={promo.products}
+      items={items}
       subcategories={nestleSubcategories}
-      ages={nestleAges.filter((a) => promo.products.some((p) => p.age === a))}
+      ages={nestleAges.filter((a) => items.some((p) => p.age === a))}
     />
   );
 }

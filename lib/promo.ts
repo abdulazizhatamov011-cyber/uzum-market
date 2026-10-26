@@ -69,6 +69,7 @@ function toProduct(r: Raw): Product {
     subcategory: subcategoryOf(r.title, brand),
     age: ageOf(r.title, brand),
     country: brand === "NAN" ? "Germaniya" : "Rossiya",
+    promo: "nestle-baby-me",
   };
 }
 

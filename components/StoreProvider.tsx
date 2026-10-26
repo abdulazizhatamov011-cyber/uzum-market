@@ -1,22 +1,13 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
+import type { Order } from "@/lib/types";
 
 type CartItem = { id: number; qty: number };
 
 export type User = { name: string; phone: string };
 
-export type Order = {
-  id: number;
-  date: string;
-  items: { id: number; qty: number; price: number }[];
-  total: number;
-  name: string;
-  phone: string;
-  delivery: string;
-  payment: string;
-  status: "Yig'ilmoqda" | "Yo'lda" | "Yetkazildi";
-};
+export type { Order };
 
 type Store = {
   cart: CartItem[];
@@ -33,7 +24,8 @@ type Store = {
   isFavorite: (id: number) => boolean;
   login: (user: User) => void;
   logout: () => void;
-  placeOrder: (order: Omit<Order, "id" | "date" | "status">) => Order;
+  // Serverda yaratilgan buyurtmani "Buyurtmalarim" uchun eslab qoladi
+  addOrder: (order: Order) => void;
   setCity: (city: string) => void;
 };
 
@@ -111,16 +103,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     isFavorite: (id) => favorites.includes(id),
     login: setUser,
     logout: () => setUser(null),
-    placeOrder: (data) => {
-      const order: Order = {
-        ...data,
-        id: 10000000 + Math.floor(Math.random() * 89999999),
-        date: new Date().toISOString(),
-        status: "Yig'ilmoqda",
-      };
-      setOrders((o) => [order, ...o]);
-      return order;
-    },
+    addOrder: (order) => setOrders((o) => [order, ...o.filter((x) => x.id !== order.id)]),
     setCity,
   };
 

@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Bozorcha — onlayn bozor
 
-## Getting Started
+Next.js 16 asosidagi o'quv loyihasi: do'kon sahifalari va admin panel.
 
-First, run the development server:
+## Ishga tushirish
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Sayt: http://localhost:3000, admin panel: http://localhost:3000/admin
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Admin panel
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Kirish paroli `.env.local` faylidagi `ADMIN_PASSWORD` dan olinadi (namuna: `.env.example`).
+  Dev rejimida parol sozlanmagan bo'lsa, vaqtinchalik `admin123` ishlaydi; productionda parol majburiy.
+- Bo'limlar: bosh panel (statistika va arizalar), buyurtmalar (holatini o'zgartirish), tovarlar (qo'shish, tahrirlash, o'chirish), bannerlar.
 
-## Learn More
+## Ma'lumotlar
 
-To learn more about Next.js, take a look at the following resources:
+Tovarlar, bannerlar, buyurtmalar va arizalar serverdagi `data/db.json` faylida saqlanadi.
+Fayl birinchi ishga tushirishda `lib/products.ts` va `lib/promo-nestle.json` dan avtomatik yaratiladi.
+Boshlang'ich holatga qaytarish uchun serverni to'xtatib, `data/db.json` ni o'chiring.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Fayl-baza doimiy diskli serverda (VPS yoki o'z kompyuteringiz) ishlaydi. Vercel kabi serverless hostingda fayl saqlanib qolmaydi —
+u yerda haqiqiy ma'lumotlar bazasi (masalan, PostgreSQL) kerak bo'ladi.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## SMS orqali kirish
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Telefon raqamiga tasdiqlash kodi Eskiz.uz orqali yuboriladi (`ESKIZ_EMAIL`, `ESKIZ_PASSWORD` — `.env.example` ga qarang).
+Sozlanmagan bo'lsa, dev rejimida kod ekranda va server konsolida ko'rsatiladi.

@@ -31,7 +31,7 @@ export default function CatalogView({
 
   return (
     <div className="container-x pt-4 grid gap-8 md:grid-cols-[220px_1fr]">
-      <aside className="hidden md:block">
+      <aside className="hidden md:block sticky top-[172px] self-start max-h-[calc(100vh-188px)] overflow-y-auto overscroll-contain pr-2 [scrollbar-width:thin]">
         <h3 className="font-semibold mb-3">Turkumlar</h3>
         <ul className="space-y-1 text-sm">
           {categories.map((c) => (

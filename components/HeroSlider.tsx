@@ -2,11 +2,13 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { banners } from "@/lib/data";
+import { useCatalog } from "./CatalogProvider";
 import { ChevronLeft, ChevronRight } from "./Icons";
 import BannerSlide from "./BannerSlide";
 
 export default function HeroSlider() {
+  // Admin hamma bannerlarni o'chirgan bo'lsa, blok ko'rsatilmaydi
+  if (!useCatalog().banners.length) return null;
   return (
     <>
       <MobileBanners />
@@ -18,6 +20,7 @@ export default function HeroSlider() {
 }
 
 function DesktopSlider() {
+  const { banners } = useCatalog();
   const [i, setI] = useState(0);
   const [paused, setPaused] = useState(false);
   const touchX = useRef<number | null>(null);
@@ -74,6 +77,7 @@ function DesktopSlider() {
 
 // Telefonda: kartalar yonma-yon, chetida keyingisi ko'rinib turadi, barmoq bilan suriladi
 function MobileBanners() {
+  const { banners } = useCatalog();
   const ref = useRef<HTMLDivElement>(null);
   const [paused, setPaused] = useState(false);
 

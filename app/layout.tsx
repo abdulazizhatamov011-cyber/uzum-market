@@ -6,6 +6,9 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import MobileNav from "@/components/MobileNav";
 import AppBanner from "@/components/AppBanner";
+import SiteChrome from "@/components/SiteChrome";
+import { CatalogProvider } from "@/components/CatalogProvider";
+import { getCatalog } from "@/lib/catalog";
 
 // Matn uchun Onest, sarlavha/narx/logo uchun keng va yumaloq Unbounded (bozor peshtaxtasi yozuvlari kabi)
 const onest = Onest({ variable: "--font-onest", subsets: ["latin", "cyrillic"] });
@@ -16,17 +19,32 @@ export const metadata: Metadata = {
   description: "Eksklyuziv tovarlar va aksiyalar. 1 kunda bepul yetkazib berish.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  // Katalog server bazasidan (keshlangan) o'qiladi va client komponentlarga uzatiladi
+  const { products, banners } = await getCatalog();
   return (
     <html lang="uz" className={`${onest.variable} ${unbounded.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
-        <StoreProvider>
-          <AppBanner />
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-          <MobileNav />
-        </StoreProvider>
+        <CatalogProvider products={products} banners={banners}>
+          <StoreProvider>
+            <SiteChrome
+              top={
+                <>
+                  <AppBanner />
+                  <Header />
+                </>
+              }
+              bottom={
+                <>
+                  <Footer />
+                  <MobileNav />
+                </>
+              }
+            >
+              {children}
+            </SiteChrome>
+          </StoreProvider>
+        </CatalogProvider>
       </body>
     </html>
   );

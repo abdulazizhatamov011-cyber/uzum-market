@@ -4,13 +4,16 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import Link from "next/link";
 import { useStore, type Order } from "@/components/StoreProvider";
 import PageShell, { EmptyState, inputCls } from "@/components/PageShell";
-import PhoneInput, { formatPhone, phoneDigits } from "@/components/PhoneInput";
-import { formatPrice, getProduct, pickupPoints } from "@/lib/data";
+import PhoneInput, { phoneDigits } from "@/components/PhoneInput";
+import { formatPrice, pickupPoints } from "@/lib/data";
+import { useCatalog } from "@/components/CatalogProvider";
+import { createOrder } from "@/lib/actions/shop";
 
 const payments = ["Karta orqali (Uzcard / Humo)", "Naqd pul — olayotganda", "Bozorcha Nasiya — muddatli to'lov"];
 
 export default function CheckoutPage() {
-  const { cart, user, city, placeOrder, clearCart } = useStore();
+  const { cart, user, city, addOrder, clearCart } = useStore();
+  const { getProduct } = useCatalog();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [method, setMethod] = useState<"pickup" | "courier">("pickup");
@@ -19,6 +22,7 @@ export default function CheckoutPage() {
   const [payment, setPayment] = useState(payments[0]);
   const [error, setError] = useState("");
   const [done, setDone] = useState<Order | null>(null);
+  const [sending, setSending] = useState(false);
 
   // Next.js sahifani yashirib saqlaydi (Activity) — qaytib kelganda eski natija ko'rinmasin
   useLayoutEffect(() => () => {
@@ -63,24 +67,32 @@ export default function CheckoutPage() {
     );
   }
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (sending) return;
     if (name.trim().length < 2) return setError("Qabul qiluvchining ismini kiriting");
     if (phone.length !== 9) return setError("Telefon raqamini to'liq kiriting");
     const pickup = points.find((p) => String(p.id) === point);
     if (method === "pickup" && !pickup) return setError("Topshirish punktini tanlang");
     if (method === "courier" && address.trim().length < 5) return setError("Yetkazish manzilini kiriting");
     setError("");
-    const order = placeOrder({
-      items: rows.map((r) => ({ id: r.id, qty: r.qty, price: r.p.price })),
-      total,
+    setSending(true);
+    // Buyurtma serverda yaratiladi: narx va jami summani server bazadagi narxdan hisoblaydi
+    const res = await createOrder({
+      items: rows.map((r) => ({ id: r.id, qty: r.qty })),
       name: name.trim(),
-      phone: formatPhone(phone),
-      delivery: method === "pickup" ? `Topshirish punkti: ${pickup!.address}` : `Kuryer: ${city}, ${address.trim()}`,
+      phone,
+      city,
+      method,
+      pointId: pickup?.id,
+      address: address.trim(),
       payment,
-    });
+    }).catch(() => ({ ok: false as const, error: "Server bilan aloqa yo'q. Qayta urinib ko'ring" }));
+    setSending(false);
+    if (!res.ok) return setError(res.error);
+    addOrder(res.data);
     clearCart();
-    setDone(order);
+    setDone(res.data);
     window.scrollTo(0, 0);
   };
 
@@ -157,8 +169,8 @@ export default function CheckoutPage() {
             <span className="text-2xl font-bold">{formatPrice(total)} so&apos;m</span>
           </div>
           {error && <p className="text-sm text-sale mt-3">{error}</p>}
-          <button type="submit" className="mt-5 w-full h-12 rounded-full bg-brand text-white font-semibold hover:bg-brand-dark transition">
-            Buyurtmani tasdiqlash
+          <button type="submit" disabled={sending} className="mt-5 w-full h-12 rounded-full bg-brand text-white font-semibold hover:bg-brand-dark transition disabled:opacity-60">
+            {sending ? "Yuborilmoqda…" : "Buyurtmani tasdiqlash"}
           </button>
           <p className="text-xs text-muted mt-3 text-center">Demo: haqiqiy to&apos;lov amalga oshirilmaydi</p>
         </aside>

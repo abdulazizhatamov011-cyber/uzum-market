@@ -4,7 +4,9 @@ import BrandMark from "./BrandMark";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { categories, cities, navLinks } from "@/lib/data";
+import { categories, categoryCover, cities, navLinks } from "@/lib/data";
+import CategoryThumb from "./CategoryThumb";
+import { useCatalog } from "./CatalogProvider";
 import { useStore } from "./StoreProvider";
 import {
   BagIcon,
@@ -108,6 +110,7 @@ function Dropdown({ children, onClose, right }: { children: React.ReactNode; onC
 }
 
 function CatalogMenu({ onClose }: { onClose: () => void }) {
+  const { products } = useCatalog();
   return (
     <div className="absolute left-0 right-0 top-full z-40 bg-white shadow-xl border-t border-line">
       <div className="container-x grid grid-cols-1 md:grid-cols-[280px_1fr] gap-6 py-6 max-h-[70vh] overflow-auto">
@@ -119,7 +122,7 @@ function CatalogMenu({ onClose }: { onClose: () => void }) {
                 onClick={onClose}
                 className="flex items-center gap-3 rounded-full px-3 py-2 hover:bg-surface"
               >
-                <span className="text-lg">{c.icon}</span>
+                <CategoryThumb c={c} src={categoryCover(c, products)} className="w-8 h-8 rounded-full" />
                 <span className="flex-1">{c.name}</span>
                 <ChevronRight className="w-4 h-4 text-muted" />
               </Link>
@@ -134,7 +137,7 @@ function CatalogMenu({ onClose }: { onClose: () => void }) {
               onClick={onClose}
               className="rounded-2xl bg-surface p-5 hover:bg-surface-2 transition"
             >
-              <div className="text-4xl mb-3">{c.icon}</div>
+              <CategoryThumb c={c} src={categoryCover(c, products)} className="w-16 h-16 rounded-2xl mb-3" />
               <div className="font-semibold">{c.name}</div>
               <div className="text-sm text-muted mt-1">Barcha tovarlar</div>
             </Link>

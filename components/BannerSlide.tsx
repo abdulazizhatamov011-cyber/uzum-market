@@ -1,10 +1,12 @@
-import type { Banner } from "@/lib/data";
-import { getProduct } from "@/lib/data";
+"use client";
+
+import type { Banner } from "@/lib/types";
+import { useCatalog } from "./CatalogProvider";
 
 // Bitta banner: chapda sarlavha, o'ngda mahsulot Rishton laganiga o'xshash dumaloq "tovoq"da.
 // O'lchamlar "cqw" (konteyner kengligiga nisbatan) — telefonda ham, kompyuterda ham bir xil ko'rinadi.
 export default function BannerSlide({ b, eager, phone }: { b: Banner; eager?: boolean; phone?: boolean }) {
-  const image = getProduct(b.productId)?.image;
+  const image = useCatalog().getProduct(b.productId)?.image;
   // Telefonda banner balandroq (2.2:1), shuning uchun matn va tovoq nisbatan kattaroq
   const t = phone
     ? { title: "text-[8cqw]", sub: "text-[3.9cqw]", btn: "text-[3.4cqw] px-[3.6cqw] py-[1.4cqw]", plate: "w-[38cqw]", box: "max-w-[58%]" }
