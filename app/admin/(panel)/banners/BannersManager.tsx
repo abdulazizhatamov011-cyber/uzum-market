@@ -10,7 +10,7 @@ type Opt = { id: number; title: string; image: string };
 
 const palette = ["#ea580c", "#13234a", "#1f5fbf", "#c2255c", "#2f7d4f", "#7c3aed", "#0f766e", "#b45309"];
 
-const empty: BannerInput = { title: "", subtitle: "", color: palette[0], productId: 0, href: "/" };
+const empty: BannerInput = { title: "", subtitle: "", titleRu: "", subtitleRu: "", color: palette[0], productId: 0, href: "/" };
 
 // Saytdagi bannerning soddalashtirilgan nusxasi (oldindan ko'rish uchun)
 function Preview({ b, image }: { b: BannerInput; image?: string }) {
@@ -167,6 +167,16 @@ function BannerForm({
             Qisqa tavsif
             <input value={f.subtitle} maxLength={60} onChange={(e) => set("subtitle", e.target.value)} className={`${field} mt-1`} />
           </label>
+          <div className="grid grid-cols-2 gap-3">
+            <label className="block text-sm">
+              Sarlavha (ruscha)
+              <input value={f.titleRu ?? ""} maxLength={40} lang="ru" onChange={(e) => set("titleRu", e.target.value)} className={`${field} mt-1`} />
+            </label>
+            <label className="block text-sm">
+              Tavsif (ruscha)
+              <input value={f.subtitleRu ?? ""} maxLength={60} lang="ru" onChange={(e) => set("subtitleRu", e.target.value)} className={`${field} mt-1`} />
+            </label>
+          </div>
           <fieldset className="text-sm">
             <legend>Fon rangi</legend>
             <div className="flex flex-wrap items-center gap-2 mt-1.5">

@@ -8,10 +8,11 @@ export const statusStyle: Record<OrderStatus, string> = {
   "Bekor qilindi": "bg-[#fde8ee] text-sale",
 };
 
-export default function OrderStatusBadge({ status }: { status: OrderStatus }) {
+// Admin panelda (I18nProvider yo'q) — o'zbekcha holat nomi, saytda — tanlangan tilda
+export default function OrderStatusBadge({ status, label }: { status: OrderStatus; label?: string }) {
   return (
     <span className={`inline-block whitespace-nowrap rounded-full px-3 py-1 text-[13px] font-medium ${statusStyle[status] ?? "bg-surface"}`}>
-      {status}
+      {label ?? status}
     </span>
   );
 }

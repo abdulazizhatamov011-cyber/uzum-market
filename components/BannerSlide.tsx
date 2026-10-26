@@ -2,11 +2,14 @@
 
 import type { Banner } from "@/lib/types";
 import { useCatalog } from "./CatalogProvider";
+import { useI18n } from "./I18nProvider";
+import { bannerSubtitle, bannerTitle } from "@/lib/data";
 
 // Bitta banner: chapda sarlavha, o'ngda mahsulot Rishton laganiga o'xshash dumaloq "tovoq"da.
 // O'lchamlar "cqw" (konteyner kengligiga nisbatan) — telefonda ham, kompyuterda ham bir xil ko'rinadi.
 export default function BannerSlide({ b, eager, phone }: { b: Banner; eager?: boolean; phone?: boolean }) {
   const image = useCatalog().getProduct(b.productId)?.image;
+  const { t: tr, lang } = useI18n();
   // Telefonda banner balandroq (2.2:1), shuning uchun matn va tovoq nisbatan kattaroq
   const t = phone
     ? { title: "text-[8cqw]", sub: "text-[3.9cqw]", btn: "text-[3.4cqw] px-[3.6cqw] py-[1.4cqw]", plate: "w-[38cqw]", box: "max-w-[58%]" }
@@ -14,10 +17,10 @@ export default function BannerSlide({ b, eager, phone }: { b: Banner; eager?: bo
   return (
     <div className="relative w-full h-full overflow-hidden text-white [container-type:inline-size]" style={{ background: b.color }}>
       <div className={`relative h-full flex flex-col justify-center pl-[6cqw] ${t.box}`}>
-        <h2 className={`font-display font-bold leading-[1.02] tracking-[-0.03em] ${t.title}`}>{b.title}</h2>
-        <p className={`mt-[1.4cqw] leading-snug text-white/90 ${t.sub}`}>{b.subtitle}</p>
+        <h2 className={`font-display font-bold leading-[1.02] tracking-[-0.03em] ${t.title}`}>{bannerTitle(b, lang)}</h2>
+        <p className={`mt-[1.4cqw] leading-snug text-white/90 ${t.sub}`}>{bannerSubtitle(b, lang)}</p>
         <span className={`mt-[2.4cqw] self-start rounded-full bg-white text-ink font-medium ${t.btn}`}>
-          Ko&apos;rish
+          {tr.home.see}
         </span>
       </div>
 

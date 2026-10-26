@@ -2,6 +2,7 @@
 // SMS Eskiz.uz orqali yuboriladi: .env.local faylida ESKIZ_EMAIL va ESKIZ_PASSWORD bo'lishi kerak.
 // Ular bo'lmasa va loyiha dev rejimida bo'lsa, kod SMS o'rniga server konsoliga chiqariladi.
 import { randomInt } from "node:crypto";
+import { getDict, type Lang } from "./i18n";
 
 const CODE_TTL = 5 * 60 * 1000; // kod 5 daqiqa amal qiladi
 const RESEND_AFTER = 60 * 1000; // qayta yuborish — 60 soniyadan keyin
@@ -23,26 +24,27 @@ export type SendResult =
   | { ok: true; devCode?: string; resendIn: number }
   | { ok: false; error: string; status: number; resendIn?: number };
 
-export async function sendCode(phone: string): Promise<SendResult> {
+export async function sendCode(phone: string, lang: Lang = "uz"): Promise<SendResult> {
+  const m = getDict(lang).otp;
   const now = Date.now();
   const prev = store.get(phone);
   if (prev && now - prev.sentAt < RESEND_AFTER) {
     const resendIn = Math.ceil((RESEND_AFTER - (now - prev.sentAt)) / 1000);
-    return { ok: false, status: 429, error: `Qayta yuborish uchun ${resendIn} soniya kuting`, resendIn };
+    return { ok: false, status: 429, error: m.wait(resendIn), resendIn };
   }
 
   const code = String(randomInt(0, 10000)).padStart(4, "0");
-  const text = `Bozorcha: tasdiqlash kodi ${code}. Kodni hech kimga bermang.`;
+  const text = m.sms(code);
 
   if (smsConfigured()) {
     try {
       await sendEskiz(`998${phone}`, text);
     } catch (e) {
       console.error("[otp] SMS yuborilmadi:", e);
-      return { ok: false, status: 502, error: "SMS yuborib bo'lmadi. Birozdan keyin qayta urinib ko'ring" };
+      return { ok: false, status: 502, error: m.smsFailed };
     }
   } else if (process.env.NODE_ENV === "production") {
-    return { ok: false, status: 503, error: "SMS xizmati sozlanmagan" };
+    return { ok: false, status: 503, error: m.notConfigured };
   } else {
     console.log(`[otp] +998${phone} uchun kod: ${code} (SMS xizmati sozlanmagan — dev rejim)`);
   }
@@ -51,19 +53,20 @@ export async function sendCode(phone: string): Promise<SendResult> {
   return { ok: true, resendIn: RESEND_AFTER / 1000, ...(smsConfigured() ? {} : { devCode: code }) };
 }
 
-export function verifyCode(phone: string, code: string): { ok: true } | { ok: false; error: string } {
+export function verifyCode(phone: string, code: string, lang: Lang = "uz"): { ok: true } | { ok: false; error: string } {
+  const m = getDict(lang).otp;
   const entry = store.get(phone);
   if (!entry || Date.now() > entry.expires) {
     store.delete(phone);
-    return { ok: false, error: "Kod eskirgan. Yangi kod oling" };
+    return { ok: false, error: m.expired };
   }
   if (entry.attempts >= MAX_ATTEMPTS) {
     store.delete(phone);
-    return { ok: false, error: "Urinishlar soni tugadi. Yangi kod oling" };
+    return { ok: false, error: m.tooMany };
   }
   if (entry.code !== code) {
     entry.attempts++;
-    return { ok: false, error: `Kod noto'g'ri. Yana ${MAX_ATTEMPTS - entry.attempts} ta urinish qoldi` };
+    return { ok: false, error: m.wrong(MAX_ATTEMPTS - entry.attempts) };
   }
   store.delete(phone);
   return { ok: true };

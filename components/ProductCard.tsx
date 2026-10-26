@@ -1,13 +1,16 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/LocalLink";
 import type { Product } from "@/lib/types";
-import { formatPrice, monthly } from "@/lib/data";
+import { formatPrice, monthly, productTitle } from "@/lib/data";
+import { useI18n } from "./I18nProvider";
 import { useStore } from "./StoreProvider";
 import { CartPlusIcon, HeartIcon, StarIcon } from "./Icons";
 
 export default function ProductCard({ product: p, compact }: { product: Product; compact?: boolean }) {
   const { addToCart, toggleFavorite, isFavorite, cart } = useStore();
+  const { t, lang } = useI18n();
+  const title = productTitle(p, lang);
   const fav = isFavorite(p.id);
   const inCart = cart.some((i) => i.id === p.id);
   const discount = Math.round((1 - p.price / p.oldPrice) * 100);
@@ -21,24 +24,24 @@ export default function ProductCard({ product: p, compact }: { product: Product;
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={p.image}
-          alt={p.title}
+          alt={title}
           loading="lazy"
           className={`w-full h-full ${fullBleed ? "object-cover" : "object-contain p-4"}`}
         />
         <div className="absolute left-2 top-2 flex flex-col items-start gap-1">
           {p.original && (
             <span className="flex items-center gap-1 rounded-full bg-white/95 text-ink text-[11px] font-medium pl-1 pr-2 py-0.5">
-              <CheckBadge /> Original
+              <CheckBadge /> {t.card.original}
             </span>
           )}
           {guarantee && !compact && (
-            <span className="rounded-full bg-cobalt text-white text-[11px] font-medium px-2 py-0.5">Kafolatlangan narx</span>
+            <span className="rounded-full bg-cobalt text-white text-[11px] font-medium px-2 py-0.5">{t.card.guarantee}</span>
           )}
         </div>
-        <PriceTag price={p.price} />
+        <PriceTag price={p.price} som={t.common.som} />
       </Link>
       <button
-        aria-label={fav ? "Saralangandan olib tashlash" : "Saralanganlarga qo'shish"}
+        aria-label={fav ? t.card.removeFav : t.card.addFav}
         aria-pressed={fav}
         onClick={() => toggleFavorite(p.id)}
         className={`absolute top-3 right-3 w-8 h-8 grid place-items-center rounded-full bg-white ${
@@ -53,13 +56,13 @@ export default function ProductCard({ product: p, compact }: { product: Product;
           <span className="text-muted line-through">{formatPrice(p.oldPrice)}</span>
           {discount > 0 && <span className="font-semibold text-sale">−{discount}%</span>}
         </div>
-        <span className="text-[12px] text-cobalt font-medium">oyiga {formatPrice(monthly(p.price))} so&apos;m</span>
+        <span className="text-[12px] text-cobalt font-medium">{t.card.perMonth(monthly(p.price))}</span>
         <Link href={`/product/${p.id}`} className="mt-1 text-[13px] leading-[1.35] line-clamp-2 min-h-[35px] hover:text-brand">
-          {p.title}
+          {title}
         </Link>
         {!compact && (
           <div className="mt-1 flex items-center gap-1 text-[12px] text-muted">
-            <StarIcon /> <span className="text-ink font-medium">{p.rating.toFixed(1)}</span> ({formatPrice(p.reviews)} sharh)
+            <StarIcon /> <span className="text-ink font-medium">{p.rating.toFixed(1)}</span> ({t.card.reviews(p.reviews)})
           </div>
         )}
         <div className="flex-1 min-h-2.5" />
@@ -69,7 +72,7 @@ export default function ProductCard({ product: p, compact }: { product: Product;
             inCart ? "bg-brand-soft text-brand-dark" : "bg-ink text-white hover:bg-[#1d3266]"
           }`}
         >
-          <CartPlusIcon /> {inCart ? "Yana qo'shish" : "Savatga"}
+          <CartPlusIcon /> {inCart ? t.card.addMore : t.card.toCart}
         </button>
       </div>
     </div>
@@ -77,7 +80,7 @@ export default function ProductCard({ product: p, compact }: { product: Product;
 }
 
 // Bozordagi narx yorlig'i: chap tomoni uchli, ipga osiladigan teshigi bor
-function PriceTag({ price }: { price: number }) {
+function PriceTag({ price, som }: { price: number; som: string }) {
   return (
     <span
       className="absolute left-0 bottom-2.5 max-w-[calc(100%-8px)] flex items-center gap-1.5 bg-brand text-white pl-4 pr-2.5 py-1 rounded-r-lg"
@@ -85,7 +88,7 @@ function PriceTag({ price }: { price: number }) {
     >
       <span className="w-1.5 h-1.5 rounded-full bg-white" aria-hidden />
       <span className="font-display font-bold text-[14px] sm:text-[15px] leading-tight tracking-tight whitespace-nowrap">
-        {formatPrice(price)} <span className="text-[11px] font-medium">so&apos;m</span>
+        {formatPrice(price)} <span className="text-[11px] font-medium">{som}</span>
       </span>
     </span>
   );

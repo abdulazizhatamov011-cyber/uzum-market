@@ -3,12 +3,15 @@
 import { useEffect, useState } from "react";
 import BrandMark from "./BrandMark";
 import { CloseIcon } from "./Icons";
+import { useI18n } from "./I18nProvider";
 
 type InstallPrompt = Event & { prompt: () => Promise<void>; userChoice: Promise<{ outcome: string }> };
 
 // Telefonda sahifaning eng tepasida: saytni bosh ekranga o'rnatish taklifi.
 // Android/Chrome'da tizimning o'rnatish oynasi ochiladi, iPhone'da qo'lda qo'shish yo'riqnomasi ko'rsatiladi.
 export default function AppBanner() {
+  const { t } = useI18n();
+  const a = t.appBanner;
   const [hidden, setHidden] = useState(false);
   const [prompt, setPrompt] = useState<InstallPrompt | null>(null);
   const [help, setHelp] = useState(false);
@@ -55,16 +58,16 @@ export default function AppBanner() {
 
   return (
     <div className="md:hidden flex items-center gap-3 px-4 py-2">
-      <button aria-label="Yopish" onClick={close} className="-ml-1 text-muted">
+      <button aria-label={t.common.close} onClick={close} className="-ml-1 text-muted">
         <CloseIcon className="w-4 h-4" />
       </button>
       <BrandMark className="w-11 h-11" />
       <div className="flex-1 min-w-0 leading-tight">
         <div className="font-medium text-[15px]">Bozorcha</div>
-        <div className="text-[13px] text-muted">Telefoningizga o&apos;rnating</div>
+        <div className="text-[13px] text-muted">{a.install}</div>
       </div>
       <button onClick={install} className="h-9 px-4 rounded-full bg-brand text-white text-[15px] font-medium">
-        O&apos;rnatish
+        {a.button}
       </button>
 
       {help && (
@@ -73,24 +76,24 @@ export default function AppBanner() {
             <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-line" />
             <div className="flex items-center gap-3">
               <BrandMark className="w-12 h-12" />
-              <div className="font-semibold text-lg">Bozorchani bosh ekranga qo&apos;shing</div>
+              <div className="font-semibold text-lg">{a.title}</div>
             </div>
             <ol className="mt-4 space-y-2 text-[15px] list-decimal pl-5">
               {ios ? (
                 <>
-                  <li>Pastdagi <b>Ulashish</b> tugmasini bosing (⬆️ belgili kvadrat)</li>
-                  <li><b>Bosh ekranga qo&apos;shish</b> (На экран «Домой») ni tanlang</li>
-                  <li>Yuqorida <b>Qo&apos;shish</b> ni bosing</li>
+                  <li>{a.ios1}</li>
+                  <li>{a.ios2}</li>
+                  <li>{a.ios3}</li>
                 </>
               ) : (
                 <>
-                  <li>Brauzerning <b>⋮</b> menyusini oching</li>
-                  <li><b>Bosh ekranga qo&apos;shish</b> yoki <b>Ilovani o&apos;rnatish</b> ni tanlang</li>
+                  <li>{a.and1}</li>
+                  <li>{a.and2}</li>
                 </>
               )}
             </ol>
             <button onClick={() => setHelp(false)} className="mt-5 w-full h-12 rounded-full bg-brand text-white font-medium">
-              Tushunarli
+              {a.ok}
             </button>
           </div>
         </div>

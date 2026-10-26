@@ -3,7 +3,8 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { orderStatuses, type Order, type OrderStatus } from "@/lib/types";
-import { formatDateTime, formatPrice } from "@/lib/data";
+import { formatPrice } from "@/lib/data";
+import { formatDateTime } from "@/lib/i18n";
 import { setOrderStatus } from "@/lib/actions/admin";
 import { statusStyle } from "@/components/OrderStatusBadge";
 
@@ -67,7 +68,7 @@ export default function OrdersTable({ orders }: { orders: Order[] }) {
               <div className="grid gap-2 p-4 sm:grid-cols-[1.1fr_1.2fr_auto_170px] sm:items-center">
                 <button onClick={() => setOpen(open === o.id ? null : o.id)} className="text-left" aria-expanded={open === o.id}>
                   <div className="font-medium">№{o.id}</div>
-                  <div className="text-[13px] text-muted">{formatDateTime(o.date)}</div>
+                  <div className="text-[13px] text-muted">{formatDateTime(o.date, "uz")}</div>
                 </button>
                 <div className="text-sm min-w-0">
                   <div className="truncate">{o.name}</div>

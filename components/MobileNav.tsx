@@ -1,20 +1,23 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/LocalLink";
 import { usePathname } from "next/navigation";
 import { useStore } from "./StoreProvider";
 import { BagIcon, HeartIcon, UserIcon } from "./Icons";
+import { useI18n } from "./I18nProvider";
+import { stripLocale } from "@/lib/i18n";
 
 export default function MobileNav() {
-  const path = usePathname();
+  const path = stripLocale(usePathname());
+  const { t } = useI18n();
   const { cartCount, user } = useStore();
   const profileHref = user ? "/profile" : "/login";
   const items = [
-    { href: "/", label: "Bosh sahifa", icon: (on: boolean) => <HomeMark active={on} /> },
-    { href: "/catalog", label: "Katalog", icon: () => <CatalogIcon /> },
-    { href: "/cart", label: "Savat", icon: () => <BagIcon className="w-[22px] h-[22px]" />, count: cartCount },
-    { href: "/favorites", label: "Saralangan", icon: () => <HeartIcon className="w-[22px] h-[22px]" /> },
-    { href: profileHref, label: "Kabinet", icon: () => <UserIcon className="w-[22px] h-[22px]" /> },
+    { href: "/", label: t.nav.home, icon: (on: boolean) => <HomeMark active={on} /> },
+    { href: "/catalog", label: t.nav.catalog, icon: () => <CatalogIcon /> },
+    { href: "/cart", label: t.nav.cart, icon: () => <BagIcon className="w-[22px] h-[22px]" />, count: cartCount },
+    { href: "/favorites", label: t.nav.favorites, icon: () => <HeartIcon className="w-[22px] h-[22px]" /> },
+    { href: profileHref, label: t.nav.cabinet, icon: () => <UserIcon className="w-[22px] h-[22px]" /> },
   ];
   const isActive = (href: string) =>
     href === "/" ? path === "/" : path.startsWith(href) || (href === profileHref && path === "/orders");

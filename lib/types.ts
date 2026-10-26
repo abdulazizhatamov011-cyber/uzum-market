@@ -18,12 +18,15 @@ export type Product = {
   country?: string;
   // Qaysi aksiya sahifasiga tegishli (masalan, "nestle-baby-me")
   promo?: string;
+  // Ruscha nomi (bo'lmasa o'zbekchasi ko'rsatiladi)
+  titleRu?: string;
 };
 
 export type Category = {
   slug: string;
   name: string;
   icon: string;
+  nameRu: string;
   // Turkum belgisi o'rnida ko'rsatiladigan tovar (rasmi)
   cover: number;
 };
@@ -33,6 +36,8 @@ export type Banner = {
   id: number;
   title: string;
   subtitle: string;
+  titleRu?: string;
+  subtitleRu?: string;
   color: string;
   productId: number;
   href: string;

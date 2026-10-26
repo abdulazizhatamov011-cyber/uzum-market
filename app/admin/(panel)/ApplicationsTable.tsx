@@ -4,7 +4,7 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { applicationKinds, type Application, type ApplicationKind } from "@/lib/types";
 import { deleteApplication, setApplicationDone } from "@/lib/actions/admin";
-import { formatDateTime } from "@/lib/data";
+import { formatDateTime } from "@/lib/i18n";
 
 export default function ApplicationsTable({ items }: { items: Application[] }) {
   const router = useRouter();
@@ -53,7 +53,7 @@ export default function ApplicationsTable({ items }: { items: Application[] }) {
               <div className="text-muted mt-0.5 break-words">
                 {a.city}. {a.extra}
               </div>
-              <div className="text-[12px] text-muted mt-0.5">{formatDateTime(a.date)}</div>
+              <div className="text-[12px] text-muted mt-0.5">{formatDateTime(a.date, "uz")}</div>
             </div>
             <div className="flex gap-2">
               <button

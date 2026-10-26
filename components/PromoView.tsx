@@ -1,24 +1,31 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/LocalLink";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { Product } from "@/lib/types";
-import { formatPrice } from "@/lib/data";
 import ProductCard from "./ProductCard";
 import { ChevronDown, ChevronRight, CloseIcon } from "./Icons";
+import { useI18n } from "./I18nProvider";
+import type { Dict } from "@/lib/i18n";
+
+// Filtr qiymatlari bazada o'zbekcha — ko'rsatishda tarjima qilinadi
+const useLabel = () => {
+  const { t } = useI18n();
+  return (v: string) => t.promo.labels[v] ?? v;
+};
 
 const PAGE = 48;
 
 const sorts = {
-  popular: { label: "Ommabop", fn: (a: Product, b: Product) => b.reviews - a.reviews },
-  cheap: { label: "Arzonroq", fn: (a: Product, b: Product) => a.price - b.price },
-  expensive: { label: "Qimmatroq", fn: (a: Product, b: Product) => b.price - a.price },
-  rating: { label: "Yuqori reyting", fn: (a: Product, b: Product) => b.rating - a.rating || b.reviews - a.reviews },
+  popular: { key: "sortPopular", fn: (a: Product, b: Product) => b.reviews - a.reviews },
+  cheap: { key: "sortCheap", fn: (a: Product, b: Product) => a.price - b.price },
+  expensive: { key: "sortExpensive", fn: (a: Product, b: Product) => b.price - a.price },
+  rating: { key: "sortRating", fn: (a: Product, b: Product) => b.rating - a.rating || b.reviews - a.reviews },
   discount: {
-    label: "Chegirma kattaroq",
+    key: "sortDiscount",
     fn: (a: Product, b: Product) => b.price / b.oldPrice - a.price / a.oldPrice,
   },
-};
+} satisfies Record<string, { key: keyof Dict["promo"]; fn: (a: Product, b: Product) => number }>;
 type SortKey = keyof typeof sorts;
 
 const toggle = (set: string[], v: string) => (set.includes(v) ? set.filter((x) => x !== v) : [...set, v]);
@@ -38,6 +45,9 @@ export default function PromoView({
     () => ({ min: Math.min(...items.map((p) => p.price)), max: Math.max(...items.map((p) => p.price)) }),
     [items]
   );
+  const { t } = useI18n();
+  const label = useLabel();
+  const sortLabel = (k: SortKey) => t.promo[sorts[k].key] as string;
   const [lo, setLo] = useState(bounds.min);
   const [hi, setHi] = useState(bounds.max);
   const [sub, setSub] = useState<string | null>(null);
@@ -74,12 +84,12 @@ export default function PromoView({
 
   const active = [
     ...(lo !== bounds.min || hi !== bounds.max
-      ? [{ label: `${formatPrice(lo)} – ${formatPrice(hi)} so'm`, clear: () => (setLo(bounds.min), setHi(bounds.max)) }]
+      ? [{ label: t.promo.priceRange(lo, hi), clear: () => (setLo(bounds.min), setHi(bounds.max)) }]
       : []),
-    ...(sub ? [{ label: sub, clear: () => setSub(null) }] : []),
-    ...age.map((v) => ({ label: v, clear: () => setAge((s) => toggle(s, v)) })),
+    ...(sub ? [{ label: label(sub), clear: () => setSub(null) }] : []),
+    ...age.map((v) => ({ label: label(v), clear: () => setAge((s) => toggle(s, v)) })),
     ...brand.map((v) => ({ label: v, clear: () => setBrand((s) => toggle(s, v)) })),
-    ...country.map((v) => ({ label: v, clear: () => setCountry((s) => toggle(s, v)) })),
+    ...country.map((v) => ({ label: label(v), clear: () => setCountry((s) => toggle(s, v)) })),
   ];
   const resetAll = () => {
     setLo(bounds.min);
@@ -112,7 +122,7 @@ export default function PromoView({
   return (
     <div className="container-x pt-4">
       <nav className="text-[13px] text-muted flex gap-2 mb-6">
-        <Link href="/" className="hover:text-ink">Bosh sahifa</Link>/
+        <Link href="/" className="hover:text-ink">{t.common.home}</Link>/
         <span className="text-ink line-clamp-1">{title}</span>
       </nav>
 
@@ -121,7 +131,7 @@ export default function PromoView({
 
         <div className="min-w-0">
           <div className="text-[15px] mb-3">
-            Termada quyidagi turkumlardan <b>{list.length}</b> ta tovar
+            {t.promo.inCollection} <b>{t.promo.goodsCount(list.length)}</b>
           </div>
 
           <Chips subs={subs} value={sub} onChange={setSub} />
@@ -129,8 +139,8 @@ export default function PromoView({
           <div className="flex flex-wrap items-center justify-between gap-3 mt-4 mb-5">
             <div className="relative">
               <button onClick={() => setSortOpen((o) => !o)} className="flex items-center gap-1.5 text-sm">
-                <span className="text-muted">Avval ko&apos;rsatiladi</span>
-                <span className="font-medium">{sorts[sort].label}</span>
+                <span className="text-muted">{t.promo.shownFirst}</span>
+                <span className="font-medium">{sortLabel(sort)}</span>
                 <ChevronDown className={`w-4 h-4 transition ${sortOpen ? "rotate-180" : ""}`} />
               </button>
               {sortOpen && (
@@ -146,7 +156,7 @@ export default function PromoView({
                           }}
                           className={`w-full text-left px-4 py-2 text-sm hover:bg-surface ${k === sort ? "text-brand font-medium" : ""}`}
                         >
-                          {sorts[k].label}
+                          {sortLabel(k)}
                         </button>
                       </li>
                     ))}
@@ -158,7 +168,7 @@ export default function PromoView({
               onClick={() => setMobileFilters(true)}
               className="md:hidden h-9 px-4 rounded-lg bg-surface text-sm font-medium"
             >
-              Filtrlar{active.length ? ` (${active.length})` : ""}
+              {t.promo.filters}{active.length ? ` (${active.length})` : ""}
             </button>
           </div>
 
@@ -174,7 +184,7 @@ export default function PromoView({
                 </button>
               ))}
               <button onClick={resetAll} className="h-8 px-3 text-sm text-muted hover:text-ink">
-                Hammasini tozalash
+                {t.promo.clearAll}
               </button>
             </div>
           )}
@@ -192,7 +202,7 @@ export default function PromoView({
                     onClick={() => setShown((s) => s + PAGE)}
                     className="h-12 w-full max-w-md rounded-xl bg-surface font-medium hover:bg-surface-2 transition"
                   >
-                    Yana koʻrsatish {Math.min(PAGE, list.length - shown)}
+                    {t.promo.showMore(Math.min(PAGE, list.length - shown))}
                   </button>
                 </div>
               )}
@@ -200,9 +210,9 @@ export default function PromoView({
           ) : (
             <div className="py-20 text-center">
               <div className="text-5xl">🔍</div>
-              <p className="mt-3 text-muted">Tanlangan filtrlar bo&apos;yicha tovar topilmadi</p>
+              <p className="mt-3 text-muted">{t.promo.nothing}</p>
               <button onClick={resetAll} className="mt-4 h-10 px-5 rounded-full bg-brand text-white text-sm font-medium">
-                Filtrlarni tozalash
+                {t.promo.clearFilters}
               </button>
             </div>
           )}
@@ -212,21 +222,21 @@ export default function PromoView({
       {mobileFilters && (
         <div className="fixed inset-0 z-50 bg-white flex flex-col md:hidden">
           <div className="flex items-center justify-between px-4 h-14 border-b border-line">
-            <span className="font-semibold">Filtrlar</span>
-            <button aria-label="Yopish" onClick={() => setMobileFilters(false)}>
+            <span className="font-semibold">{t.promo.filters}</span>
+            <button aria-label={t.common.close} onClick={() => setMobileFilters(false)}>
               <CloseIcon />
             </button>
           </div>
           <div className="flex-1 overflow-y-auto p-4">{filters}</div>
           <div className="p-4 border-t border-line flex gap-3">
             <button onClick={resetAll} className="flex-1 h-12 rounded-xl bg-surface font-medium">
-              Tozalash
+              {t.promo.clear}
             </button>
             <button
               onClick={() => setMobileFilters(false)}
               className="flex-1 h-12 rounded-full bg-brand text-white font-medium"
             >
-              {list.length} ta tovarni ko&apos;rsatish
+              {t.promo.showGoods(list.length)}
             </button>
           </div>
         </div>
@@ -237,6 +247,8 @@ export default function PromoView({
 
 function Chips({ subs, value, onChange }: { subs: string[]; value: string | null; onChange: (v: string | null) => void }) {
   const ref = useRef<HTMLDivElement>(null);
+  const { t } = useI18n();
+  const label = useLabel();
   return (
     <div className="relative">
       <div ref={ref} className="flex gap-2 overflow-x-auto no-scrollbar scroll-smooth pr-10">
@@ -248,12 +260,12 @@ function Chips({ subs, value, onChange }: { subs: string[]; value: string | null
               value === s ? "bg-brand text-white" : "bg-surface hover:bg-surface-2"
             }`}
           >
-            {s}
+            {label(s)}
           </button>
         ))}
       </div>
       <button
-        aria-label="Keyingi turkumlar"
+        aria-label={t.promo.nextCats}
         onClick={() => ref.current?.scrollBy({ left: 240 })}
         className="hidden sm:grid absolute right-0 top-0.5 w-8 h-8 rounded-full bg-ink text-white place-items-center shadow"
       >
@@ -280,6 +292,7 @@ function Filters(props: {
   onCountry: (v: string) => void;
 }) {
   const { bounds, lo, hi, setLo, setHi } = props;
+  const { t } = useI18n();
   const [allAges, setAllAges] = useState(false);
   const visibleAges = allAges ? props.ages : props.ages.slice(0, 6);
   const pct = (n: number) => ((n - bounds.min) / (bounds.max - bounds.min)) * 100;
@@ -287,17 +300,17 @@ function Filters(props: {
   return (
     <div className="space-y-7">
       <section>
-        <h3 className="font-semibold mb-3">Turkumlar</h3>
+        <h3 className="font-semibold mb-3">{t.promo.categories}</h3>
         <Link href="/category/bolalar" className="block px-1.5 py-1 text-sm hover:text-brand">
-          Bolalar tovarlari
+          {t.promo.kids}
         </Link>
       </section>
 
       <section>
-        <h3 className="font-semibold mb-3">Narx, baho, so&apos;m</h3>
+        <h3 className="font-semibold mb-3">{t.promo.price}</h3>
         <div className="flex gap-2">
-          <PriceInput label="dan" value={lo} onCommit={(n) => setLo(Math.min(Math.max(n, bounds.min), hi))} />
-          <PriceInput label="oldin" value={hi} onCommit={(n) => setHi(Math.max(Math.min(n, bounds.max), lo))} />
+          <PriceInput label={t.promo.from} value={lo} onCommit={(n) => setLo(Math.min(Math.max(n, bounds.min), hi))} />
+          <PriceInput label={t.promo.to} value={hi} onCommit={(n) => setHi(Math.max(Math.min(n, bounds.max), lo))} />
         </div>
         <div className="relative h-6 mt-3">
           <div className="absolute top-1/2 -translate-y-1/2 inset-x-0 h-0.5 bg-line rounded" />
@@ -307,7 +320,7 @@ function Filters(props: {
           />
           <input
             type="range"
-            aria-label="Eng kam narx"
+            aria-label={t.promo.minPrice}
             min={bounds.min}
             max={bounds.max}
             step={100}
@@ -317,7 +330,7 @@ function Filters(props: {
           />
           <input
             type="range"
-            aria-label="Eng ko'p narx"
+            aria-label={t.promo.maxPrice}
             min={bounds.min}
             max={bounds.max}
             step={100}
@@ -328,15 +341,15 @@ function Filters(props: {
         </div>
       </section>
 
-      <CheckGroup title="Bolaning yoshi" options={visibleAges} value={props.age} onToggle={props.onAge}>
+      <CheckGroup title={t.promo.age} options={visibleAges} value={props.age} onToggle={props.onAge}>
         {props.ages.length > 6 && (
           <button onClick={() => setAllAges((v) => !v)} className="mt-1 text-sm text-muted hover:text-brand">
-            {allAges ? "Yashirish" : `Yana ${props.ages.length - 6}`}
+            {allAges ? t.promo.hide : t.promo.moreN(props.ages.length - 6)}
           </button>
         )}
       </CheckGroup>
-      <CheckGroup title="Brend" options={props.brands} value={props.brand} onToggle={props.onBrand} />
-      <CheckGroup title="Ishlab chiqarish mamlakati" options={props.countries} value={props.country} onToggle={props.onCountry} />
+      <CheckGroup title={t.promo.brand} options={props.brands} value={props.brand} onToggle={props.onBrand} />
+      <CheckGroup title={t.promo.country} options={props.countries} value={props.country} onToggle={props.onCountry} />
     </div>
   );
 }
@@ -373,6 +386,7 @@ function CheckGroup({
   onToggle: (v: string) => void;
   children?: React.ReactNode;
 }) {
+  const label = useLabel();
   return (
     <section>
       <h3 className="font-semibold mb-3">{title}</h3>
@@ -385,7 +399,7 @@ function CheckGroup({
               onChange={() => onToggle(o)}
               className="w-[18px] h-[18px] accent-brand"
             />
-            {o}
+            {label(o)}
           </label>
         ))}
       </div>

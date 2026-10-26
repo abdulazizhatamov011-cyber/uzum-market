@@ -30,3 +30,9 @@ u yerda haqiqiy ma'lumotlar bazasi (masalan, PostgreSQL) kerak bo'ladi.
 
 Telefon raqamiga tasdiqlash kodi Eskiz.uz orqali yuboriladi (`ESKIZ_EMAIL`, `ESKIZ_PASSWORD` — `.env.example` ga qarang).
 Sozlanmagan bo'lsa, dev rejimida kod ekranda va server konsolida ko'rsatiladi.
+
+## Tillar / Языки
+
+Sayt ikki tilda: o'zbekcha (prefikssiz, masalan `/cart`) va ruscha (`/ru/cart`).
+Barcha matnlar `lib/i18n.ts` lug'atida; tovarlarning ruscha nomlari `lib/products-ru.json` da va admin paneldagi «Nomi (ruscha)» maydonida.
+Til almashtirgich — sarlavhada (telefonda UZ/RU tugmasi). Admin panel faqat o'zbekcha.

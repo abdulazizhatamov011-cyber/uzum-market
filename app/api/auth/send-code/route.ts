@@ -1,11 +1,13 @@
 import { isValidPhone, sendCode } from "@/lib/otp";
+import { getDict, isLang } from "@/lib/i18n";
 
 export async function POST(request: Request) {
-  const { phone } = await request.json().catch(() => ({}));
+  const { phone, lang: l } = await request.json().catch(() => ({}));
+  const lang = isLang(String(l)) ? l : "uz";
   if (!isValidPhone(phone)) {
-    return Response.json({ error: "Telefon raqamini to'liq kiriting" }, { status: 400 });
+    return Response.json({ error: getDict(lang).otp.phone }, { status: 400 });
   }
-  const result = await sendCode(phone);
+  const result = await sendCode(phone, lang);
   if (!result.ok) {
     return Response.json({ error: result.error, resendIn: result.resendIn }, { status: result.status });
   }

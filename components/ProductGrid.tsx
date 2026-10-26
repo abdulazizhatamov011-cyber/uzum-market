@@ -3,9 +3,11 @@
 import { useState } from "react";
 import type { Product } from "@/lib/types";
 import ProductCard from "./ProductCard";
+import { useI18n } from "./I18nProvider";
 
 export default function ProductGrid({ items, step = 0 }: { items: Product[]; step?: number }) {
   const [shown, setShown] = useState(step || items.length);
+  const { t } = useI18n();
   return (
     <>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-2 gap-y-5 sm:gap-x-4 sm:gap-y-6">
@@ -19,7 +21,7 @@ export default function ProductGrid({ items, step = 0 }: { items: Product[]; ste
             onClick={() => setShown((s) => s + step)}
             className="h-12 px-10 sm:px-40 rounded-xl bg-surface font-medium hover:bg-surface-2 transition"
           >
-            Yana ko&apos;rsatish {Math.min(step, items.length - shown)}
+            {t.common.showMore(Math.min(step, items.length - shown))}
           </button>
         </div>
       )}

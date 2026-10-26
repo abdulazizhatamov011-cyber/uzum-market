@@ -1,30 +1,9 @@
-import Link from "next/link";
-import BrandMark from "./BrandMark";
+"use client";
 
-const cols = [
-  {
-    title: "Biz haqimizda",
-    links: [
-      { label: "Topshirish punktlari", href: "/pickup-points" },
-      { label: "Vakansiyalar", href: "/vacancies" },
-    ],
-  },
-  {
-    title: "Foydalanuvchilarga",
-    links: [
-      { label: "Biz bilan bog'lanish", href: "/contact" },
-      { label: "Savol-Javob", href: "/faq" },
-    ],
-  },
-  {
-    title: "Tadbirkorlarga",
-    links: [
-      { label: "Bozorchada soting", href: "/seller" },
-      { label: "Sotuvchi kabinetiga kirish", href: "/seller#ariza" },
-      { label: "Topshirish punktini ochish", href: "/open-pickup-point" },
-    ],
-  },
-];
+import Link from "@/components/LocalLink";
+import BrandMark from "./BrandMark";
+import { useI18n } from "./I18nProvider";
+
 
 const socials = [
   { label: "IG", name: "Instagram", href: "https://www.instagram.com/" },
@@ -34,6 +13,20 @@ const socials = [
 ];
 
 export default function Footer() {
+  const { t } = useI18n();
+  const f = t.footer;
+  const cols = [
+    { title: f.aboutUs, links: [{ label: t.header.pickupPoints, href: "/pickup-points" }, { label: f.vacancies, href: "/vacancies" }] },
+    { title: f.forUsers, links: [{ label: f.contact, href: "/contact" }, { label: f.faq, href: "/faq" }] },
+    {
+      title: f.forBusiness,
+      links: [
+        { label: f.sell, href: "/seller" },
+        { label: f.sellerLogin, href: "/seller#ariza" },
+        { label: f.openPoint, href: "/open-pickup-point" },
+      ],
+    },
+  ];
   return (
     <footer className="mt-16 bg-ink text-white rounded-t-[32px] pb-28 md:pb-0">
       <div className="container-x grid gap-8 pt-10 pb-8 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1fr]">
@@ -43,7 +36,7 @@ export default function Footer() {
             <span className="font-display font-bold text-[22px] tracking-tight">bozorcha</span>
           </Link>
           <p className="mt-3 max-w-xs text-sm text-white/65">
-            Uydan chiqmasdan bozor qiling: buyurtma ertaga eng yaqin topshirish punktida.
+            {f.about}
           </p>
           <div className="mt-5 flex gap-2">
             {socials.map((s) => (
@@ -75,10 +68,10 @@ export default function Footer() {
       </div>
       <div className="container-x flex flex-col sm:flex-row gap-3 justify-between border-t border-white/10 py-6 text-sm text-white/55">
         <div className="flex gap-6">
-          <Link href="/privacy" className="hover:text-white">Maxfiylik kelishuvi</Link>
-          <Link href="/terms" className="hover:text-white">Foydalanuvchi kelishuvi</Link>
+          <Link href="/privacy" className="hover:text-white">{f.privacy}</Link>
+          <Link href="/terms" className="hover:text-white">{f.terms}</Link>
         </div>
-        <span>© 2026 Bozorcha — o&apos;quv loyihasi</span>
+        <span>{f.copyright}</span>
       </div>
     </footer>
   );

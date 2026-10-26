@@ -1,10 +1,11 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/LocalLink";
 import { useEffect, useRef, useState } from "react";
 import { useCatalog } from "./CatalogProvider";
 import { ChevronLeft, ChevronRight } from "./Icons";
 import BannerSlide from "./BannerSlide";
+import { useI18n } from "./I18nProvider";
 
 export default function HeroSlider() {
   // Admin hamma bannerlarni o'chirgan bo'lsa, blok ko'rsatilmaydi
@@ -21,6 +22,7 @@ export default function HeroSlider() {
 
 function DesktopSlider() {
   const { banners } = useCatalog();
+  const { t } = useI18n();
   const [i, setI] = useState(0);
   const [paused, setPaused] = useState(false);
   const touchX = useRef<number | null>(null);
@@ -64,10 +66,10 @@ function DesktopSlider() {
         <span className="font-display text-[13px] font-medium tabular-nums mr-1.5" aria-live="polite">
           {i + 1} / {n}
         </span>
-        <button aria-label="Oldingi banner" onClick={prev} className="w-8 h-8 grid place-items-center rounded-full hover:bg-surface">
+        <button aria-label={t.home.prevBanner} onClick={prev} className="w-8 h-8 grid place-items-center rounded-full hover:bg-surface">
           <ChevronLeft className="w-4 h-4" />
         </button>
-        <button aria-label="Keyingi banner" onClick={next} className="w-8 h-8 grid place-items-center rounded-full bg-ink text-white hover:bg-[#1d3266]">
+        <button aria-label={t.home.nextBanner} onClick={next} className="w-8 h-8 grid place-items-center rounded-full bg-ink text-white hover:bg-[#1d3266]">
           <ChevronRight className="w-4 h-4" />
         </button>
       </div>

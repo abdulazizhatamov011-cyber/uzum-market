@@ -32,6 +32,7 @@ export async function logout() {
 export type ProductInput = {
   id?: number;
   title: string;
+  titleRu: string;
   category: string;
   price: number;
   oldPrice: number;
@@ -65,6 +66,7 @@ export async function saveProduct(input: ProductInput): Promise<Result & { id?: 
 
   const fields = {
     title: title.slice(0, 200),
+    titleRu: String(input.titleRu ?? "").trim().slice(0, 200) || undefined,
     category: input.category,
     price,
     oldPrice,
@@ -126,6 +128,8 @@ export async function saveBanner(input: BannerInput): Promise<Result> {
   await requireAdmin();
   const title = String(input.title ?? "").trim().slice(0, 40);
   const subtitle = String(input.subtitle ?? "").trim().slice(0, 60);
+  const titleRu = String(input.titleRu ?? "").trim().slice(0, 40) || undefined;
+  const subtitleRu = String(input.subtitleRu ?? "").trim().slice(0, 60) || undefined;
   const href = String(input.href ?? "").trim();
   const color = String(input.color ?? "");
   const productId = Number(input.productId);
@@ -136,7 +140,7 @@ export async function saveBanner(input: BannerInput): Promise<Result> {
 
   const res = await updateDb<Result>((db) => {
     if (!db.products.some((p) => p.id === productId)) return { ok: false, error: `ID ${productId} tovar topilmadi` };
-    const fields = { title, subtitle, href, color, productId };
+    const fields = { title, subtitle, titleRu, subtitleRu, href, color, productId };
     if (input.id) {
       const b = db.banners.find((x) => x.id === input.id);
       if (!b) return { ok: false, error: "Banner topilmadi" };

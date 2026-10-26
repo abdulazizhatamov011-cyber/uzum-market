@@ -1,10 +1,11 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/LocalLink";
 import { useEffect, useState } from "react";
 import type { Product } from "@/lib/types";
 import ProductCard from "./ProductCard";
 import { ChevronRight } from "./Icons";
+import { useI18n } from "./I18nProvider";
 
 // Aksiya hafta oxirida (yakshanba 23:59) tugaydi
 function daysLeft() {
@@ -17,6 +18,7 @@ function daysLeft() {
 
 // Telefondagi bosh sahifa: rangli fondagi gorizontal tovarlar bloki
 export default function WeeklyDeals({ items, href }: { items: Product[]; href: string }) {
+  const { t } = useI18n();
   const [days, setDays] = useState<number | null>(null);
   useEffect(() => setDays(daysLeft()), []);
 
@@ -25,14 +27,14 @@ export default function WeeklyDeals({ items, href }: { items: Product[]; href: s
       <div className="px-5 md:px-7 flex items-start gap-3">
         <div className="flex-1 min-w-0">
           <Link href={href} className="inline-flex items-center gap-1 text-white hover:text-[#ffb27a]">
-            <h2 className="text-[21px] sm:text-[26px]">Hafta xitlari</h2>
+            <h2 className="text-[21px] sm:text-[26px]">{t.home.weekly}</h2>
             <ChevronRight className="w-5 h-5 shrink-0" />
           </Link>
-          <p className="mt-1 text-white/70 text-[14px]">Bolalar ozuqasiga aksiya — yakshanbagacha</p>
+          <p className="mt-1 text-white/70 text-[14px]">{t.home.weeklySub}</p>
         </div>
         {days !== null && (
           <span className="shrink-0 rounded-full bg-brand text-white text-[13px] font-medium px-3 py-1.5">
-            {days} kun qoldi
+            {t.home.daysLeft(days)}
           </span>
         )}
       </div>

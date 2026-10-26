@@ -13,6 +13,7 @@ const catName = (slug: string) => categories.find((c) => c.slug === slug)?.name 
 
 const empty: ProductInput = {
   title: "",
+  titleRu: "",
   category: categories[0].slug,
   price: 0,
   oldPrice: 0,
@@ -44,6 +45,7 @@ export default function ProductsManager({ products }: { products: Product[] }) {
     setEditing({
       id: p.id,
       title: p.title,
+      titleRu: p.titleRu ?? "",
       category: p.category,
       price: p.price,
       oldPrice: p.oldPrice,
@@ -195,6 +197,10 @@ function ProductForm({ initial, onClose, onSaved }: { initial: ProductInput; onC
             <label className="block text-sm">
               Nomi
               <input value={f.title} onChange={(e) => set("title", e.target.value)} required className={`${field} mt-1`} />
+            </label>
+            <label className="block text-sm">
+              Nomi (ruscha) — saytning rus versiyasi uchun
+              <input value={f.titleRu} onChange={(e) => set("titleRu", e.target.value)} lang="ru" className={`${field} mt-1`} />
             </label>
             <div className="grid grid-cols-2 gap-3">
               <label className="block text-sm">
