@@ -26,7 +26,7 @@ export default function ProfilePage() {
 
   return (
     <PageShell title="Shaxsiy kabinet">
-      <div className="rounded-2xl bg-[#f2f4f7] p-6 flex flex-wrap items-center gap-4">
+      <div className="rounded-2xl bg-surface p-6 flex flex-wrap items-center gap-4">
         <div className="w-16 h-16 rounded-full bg-brand text-white grid place-items-center text-2xl font-bold">
           {user.name[0]?.toUpperCase()}
         </div>
@@ -39,7 +39,7 @@ export default function ProfilePage() {
             logout();
             router.push("/");
           }}
-          className="h-10 px-5 rounded-xl border border-line bg-white hover:border-[#ff4d6a] hover:text-[#ff4d6a]"
+          className="h-10 px-5 rounded-xl border border-line bg-white hover:border-[#ff4d6a] hover:text-sale"
         >
           Chiqish
         </button>

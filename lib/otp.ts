@@ -32,7 +32,7 @@ export async function sendCode(phone: string): Promise<SendResult> {
   }
 
   const code = String(randomInt(0, 10000)).padStart(4, "0");
-  const text = `Uzum Market: tasdiqlash kodi ${code}. Kodni hech kimga bermang.`;
+  const text = `Bozorcha: tasdiqlash kodi ${code}. Kodni hech kimga bermang.`;
 
   if (smsConfigured()) {
     try {

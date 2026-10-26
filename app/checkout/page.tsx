@@ -7,7 +7,7 @@ import PageShell, { EmptyState, inputCls } from "@/components/PageShell";
 import PhoneInput, { formatPhone, phoneDigits } from "@/components/PhoneInput";
 import { formatPrice, getProduct, pickupPoints } from "@/lib/data";
 
-const payments = ["Karta orqali (Uzcard / Humo)", "Naqd pul — olayotganda", "Uzum Nasiya — muddatli to'lov"];
+const payments = ["Karta orqali (Uzcard / Humo)", "Naqd pul — olayotganda", "Bozorcha Nasiya — muddatli to'lov"];
 
 export default function CheckoutPage() {
   const { cart, user, city, placeOrder, clearCart } = useStore();
@@ -98,7 +98,7 @@ export default function CheckoutPage() {
 
           <section className="rounded-2xl border border-line p-5">
             <h2 className="font-semibold text-lg mb-4">Yetkazib berish — {city}</h2>
-            <div className="grid grid-cols-2 gap-2 rounded-xl bg-[#f2f4f7] p-1">
+            <div className="grid grid-cols-2 gap-2 rounded-xl bg-surface p-1">
               {(["pickup", "courier"] as const).map((m) => (
                 <button
                   key={m}
@@ -156,8 +156,8 @@ export default function CheckoutPage() {
             <span className="font-medium">Jami:</span>
             <span className="text-2xl font-bold">{formatPrice(total)} so&apos;m</span>
           </div>
-          {error && <p className="text-sm text-[#ff4d6a] mt-3">{error}</p>}
-          <button type="submit" className="mt-5 w-full h-12 rounded-xl bg-brand text-white font-semibold hover:bg-brand-dark transition">
+          {error && <p className="text-sm text-sale mt-3">{error}</p>}
+          <button type="submit" className="mt-5 w-full h-12 rounded-full bg-brand text-white font-semibold hover:bg-brand-dark transition">
             Buyurtmani tasdiqlash
           </button>
           <p className="text-xs text-muted mt-3 text-center">Demo: haqiqiy to&apos;lov amalga oshirilmaydi</p>

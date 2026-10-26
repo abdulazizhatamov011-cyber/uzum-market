@@ -144,7 +144,7 @@ export default function PromoView({
                             setSort(k);
                             setSortOpen(false);
                           }}
-                          className={`w-full text-left px-4 py-2 text-sm hover:bg-[#f2f4f7] ${k === sort ? "text-brand font-medium" : ""}`}
+                          className={`w-full text-left px-4 py-2 text-sm hover:bg-surface ${k === sort ? "text-brand font-medium" : ""}`}
                         >
                           {sorts[k].label}
                         </button>
@@ -156,7 +156,7 @@ export default function PromoView({
             </div>
             <button
               onClick={() => setMobileFilters(true)}
-              className="md:hidden h-9 px-4 rounded-lg bg-[#f2f4f7] text-sm font-medium"
+              className="md:hidden h-9 px-4 rounded-lg bg-surface text-sm font-medium"
             >
               Filtrlar{active.length ? ` (${active.length})` : ""}
             </button>
@@ -190,7 +190,7 @@ export default function PromoView({
                 <div className="flex justify-center mt-8">
                   <button
                     onClick={() => setShown((s) => s + PAGE)}
-                    className="h-12 w-full max-w-md rounded-xl bg-[#f2f4f7] font-medium hover:bg-[#e9ecf1] transition"
+                    className="h-12 w-full max-w-md rounded-xl bg-surface font-medium hover:bg-surface-2 transition"
                   >
                     Yana koʻrsatish {Math.min(PAGE, list.length - shown)}
                   </button>
@@ -201,7 +201,7 @@ export default function PromoView({
             <div className="py-20 text-center">
               <div className="text-5xl">🔍</div>
               <p className="mt-3 text-muted">Tanlangan filtrlar bo&apos;yicha tovar topilmadi</p>
-              <button onClick={resetAll} className="mt-4 h-10 px-5 rounded-lg bg-brand text-white text-sm font-medium">
+              <button onClick={resetAll} className="mt-4 h-10 px-5 rounded-full bg-brand text-white text-sm font-medium">
                 Filtrlarni tozalash
               </button>
             </div>
@@ -219,12 +219,12 @@ export default function PromoView({
           </div>
           <div className="flex-1 overflow-y-auto p-4">{filters}</div>
           <div className="p-4 border-t border-line flex gap-3">
-            <button onClick={resetAll} className="flex-1 h-12 rounded-xl bg-[#f2f4f7] font-medium">
+            <button onClick={resetAll} className="flex-1 h-12 rounded-xl bg-surface font-medium">
               Tozalash
             </button>
             <button
               onClick={() => setMobileFilters(false)}
-              className="flex-1 h-12 rounded-xl bg-brand text-white font-medium"
+              className="flex-1 h-12 rounded-full bg-brand text-white font-medium"
             >
               {list.length} ta tovarni ko&apos;rsatish
             </button>
@@ -245,7 +245,7 @@ function Chips({ subs, value, onChange }: { subs: string[]; value: string | null
             key={s}
             onClick={() => onChange(value === s ? null : s)}
             className={`shrink-0 h-9 px-3 rounded-lg text-sm transition ${
-              value === s ? "bg-brand text-white" : "bg-[#f2f4f7] hover:bg-[#e9ecf1]"
+              value === s ? "bg-brand text-white" : "bg-surface hover:bg-surface-2"
             }`}
           >
             {s}

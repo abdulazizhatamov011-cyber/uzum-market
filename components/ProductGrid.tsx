@@ -17,7 +17,7 @@ export default function ProductGrid({ items, step = 0 }: { items: Product[]; ste
         <div className="flex justify-center mt-8">
           <button
             onClick={() => setShown((s) => s + step)}
-            className="h-12 px-10 sm:px-40 rounded-xl bg-[#f2f4f7] font-medium hover:bg-[#e9ecf1] transition"
+            className="h-12 px-10 sm:px-40 rounded-xl bg-surface font-medium hover:bg-surface-2 transition"
           >
             Yana ko&apos;rsatish {Math.min(step, items.length - shown)}
           </button>

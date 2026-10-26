@@ -38,7 +38,7 @@ export default function CatalogView({
             <li key={c.slug}>
               <Link
                 href={`/category/${c.slug}`}
-                className={`block rounded-lg px-2 py-1.5 hover:bg-[#f2f4f7] ${c.slug === activeSlug ? "text-brand font-medium" : ""}`}
+                className={`block rounded-lg px-2 py-1.5 hover:bg-surface ${c.slug === activeSlug ? "text-brand font-medium" : ""}`}
               >
                 {c.name}
               </Link>

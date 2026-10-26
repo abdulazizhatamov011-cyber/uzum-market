@@ -1,7 +1,7 @@
 import PageShell from "@/components/PageShell";
 import ApplicationForm from "@/components/ApplicationForm";
 
-export const metadata = { title: "Vakansiyalar — Uzum Market" };
+export const metadata = { title: "Vakansiyalar — Bozorcha" };
 
 const jobs = [
   { title: "Frontend dasturchi (Next.js)", place: "Toshkent, ofis", type: "To'liq stavka" },

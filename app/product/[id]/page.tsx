@@ -12,7 +12,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps<"/product/[id]">) {
   const { id } = await params;
   const p = getProduct(Number(id));
-  return { title: p ? `${p.title} — Uzum Market` : "Mahsulot topilmadi" };
+  return { title: p ? `${p.title} — Bozorcha` : "Mahsulot topilmadi" };
 }
 
 export default function ProductPage({ params }: PageProps<"/product/[id]">) {

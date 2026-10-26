@@ -1,7 +1,7 @@
 import PageShell from "@/components/PageShell";
 import ApplicationForm from "@/components/ApplicationForm";
 
-export const metadata = { title: "Topshirish punktini ochish — Uzum Market" };
+export const metadata = { title: "Topshirish punktini ochish — Bozorcha" };
 
 const steps = [
   "Ariza qoldiring — menejer siz bilan bog'lanadi",
@@ -12,13 +12,13 @@ const steps = [
 
 export default function OpenPickupPointPage() {
   return (
-    <PageShell title="Topshirish punktini ochish" subtitle="O'z biznesingizni Uzum bilan boshlang">
+    <PageShell title="Topshirish punktini ochish" subtitle="O'z biznesingizni Bozorcha bilan boshlang">
       <div className="grid gap-8 lg:grid-cols-[1fr_400px]">
         <div>
           <h2 className="text-xl font-semibold mb-4">Qanday ishlaydi?</h2>
           <ol className="space-y-3">
             {steps.map((s, i) => (
-              <li key={s} className="flex gap-4 items-center rounded-2xl bg-[#f2f4f7] p-4">
+              <li key={s} className="flex gap-4 items-center rounded-2xl bg-surface p-4">
                 <span className="w-9 h-9 shrink-0 rounded-full bg-brand text-white grid place-items-center font-bold">{i + 1}</span>
                 {s}
               </li>

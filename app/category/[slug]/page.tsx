@@ -9,7 +9,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps<"/category/[slug]">) {
   const { slug } = await params;
-  return { title: `${getCategory(slug)?.name ?? "Turkum"} — Uzum Market` };
+  return { title: `${getCategory(slug)?.name ?? "Turkum"} — Bozorcha` };
 }
 
 export default function CategoryPage({ params }: PageProps<"/category/[slug]">) {

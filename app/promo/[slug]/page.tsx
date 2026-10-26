@@ -12,7 +12,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps<"/promo/[slug]">) {
   const { slug } = await params;
   const promo = promos.find((p) => p.slug === slug);
-  return { title: promo ? `${promo.title} — Uzum Market` : "Aksiya topilmadi" };
+  return { title: promo ? `${promo.title} — Bozorcha` : "Aksiya topilmadi" };
 }
 
 export default function PromoPage({ params }: PageProps<"/promo/[slug]">) {

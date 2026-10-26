@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Onest, Unbounded } from "next/font/google";
 import "./globals.css";
 import { StoreProvider } from "@/components/StoreProvider";
 import Header from "@/components/Header";
@@ -7,19 +7,18 @@ import Footer from "@/components/Footer";
 import MobileNav from "@/components/MobileNav";
 import AppBanner from "@/components/AppBanner";
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin", "cyrillic"],
-});
+// Matn uchun Onest, sarlavha/narx/logo uchun keng va yumaloq Unbounded (bozor peshtaxtasi yozuvlari kabi)
+const onest = Onest({ variable: "--font-onest", subsets: ["latin", "cyrillic"] });
+const unbounded = Unbounded({ variable: "--font-unbounded", subsets: ["latin", "cyrillic"], weight: ["500", "700", "800"] });
 
 export const metadata: Metadata = {
-  title: "Uzum Market — O'zbekistondagi milliy marketpleys",
+  title: "Bozorcha — onlayn bozor",
   description: "Eksklyuziv tovarlar va aksiyalar. 1 kunda bepul yetkazib berish.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="uz" className={`${inter.variable} h-full antialiased`}>
+    <html lang="uz" className={`${onest.variable} ${unbounded.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         <StoreProvider>
           <AppBanner />

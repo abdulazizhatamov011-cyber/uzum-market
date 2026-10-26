@@ -44,7 +44,7 @@ export default function OrdersPage() {
                 {o.items.map((i) => {
                   const p = getProduct(i.id);
                   return p ? (
-                    <Link key={i.id} href={`/product/${p.id}`} className="relative w-16 h-20 shrink-0 rounded-lg bg-[#f2f4f7]" title={p.title}>
+                    <Link key={i.id} href={`/product/${p.id}`} className="relative w-16 h-20 shrink-0 rounded-lg bg-surface" title={p.title}>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={p.image} alt={p.title} className="w-full h-full object-contain p-1" />
                       {i.qty > 1 && (

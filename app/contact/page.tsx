@@ -1,7 +1,7 @@
 import PageShell from "@/components/PageShell";
 import ApplicationForm from "@/components/ApplicationForm";
 
-export const metadata = { title: "Biz bilan bog'lanish — Uzum Market" };
+export const metadata = { title: "Biz bilan bog'lanish — Bozorcha" };
 
 const channels = [
   { icon: "📞", title: "Qo'llab-quvvatlash", text: "Har kuni 08:00 – 22:00" },
@@ -15,7 +15,7 @@ export default function ContactPage() {
       <div className="grid gap-8 lg:grid-cols-[1fr_400px]">
         <div className="grid sm:grid-cols-3 gap-4 content-start">
           {channels.map((c) => (
-            <div key={c.title} className="rounded-2xl bg-[#f2f4f7] p-5">
+            <div key={c.title} className="rounded-2xl bg-surface p-5">
               <div className="text-3xl">{c.icon}</div>
               <div className="font-semibold mt-3">{c.title}</div>
               <div className="text-sm text-muted mt-1">{c.text}</div>

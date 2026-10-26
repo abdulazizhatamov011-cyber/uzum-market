@@ -31,27 +31,15 @@ export const navLinks = [
   { label: "Oziq-ovqat", href: "/category/oziq-ovqat" },
 ];
 
-// Banner bosilganda ochiladigan sahifa
-const BANNER_LINK = "/promo/nestle-baby-me";
+// Bosh sahifa bannerlari: tekis rangli fon, sarlavha va mahsulot rasmi (BannerSlide chizadi)
+export type Banner = { title: string; subtitle: string; color: string; productId: number; href: string };
 
-// Uzum Market bosh sahifasidagi bannerlar (1350×450)
-export const banners = [
-  { image: "https://images.uzum.uz/db6ubkjct6rc739jhae0/main_page_banner.jpg", href: BANNER_LINK },
-  { image: "https://images.uzum.uz/db7np4u3g3rc73agndd0/main_page_banner.jpg", href: BANNER_LINK },
-  { image: "https://images.uzum.uz/dallaedkiblcbcb7g3c0/main_page_banner.jpg", href: BANNER_LINK },
-  { image: "https://images.uzum.uz/dbblg3m7vp7s73c15tng/main_page_banner.jpg", href: BANNER_LINK },
-  { image: "https://images.uzum.uz/dbbhc7m7vabc738erqpg/main_page_banner.jpg", href: BANNER_LINK },
-  { image: "https://images.uzum.uz/dbb2itijv54c73aro9g0/main_page_banner.jpg", href: BANNER_LINK },
-  { image: "https://images.uzum.uz/dbbip2m7vabc738eslhg/main_page_banner.jpg", href: BANNER_LINK },
-  { image: "https://images.uzum.uz/dbbfss9ndubc73cl5ci0/main_page_banner.jpg", href: BANNER_LINK },
-  { image: "https://images.uzum.uz/dbbgodijv54c73arrml0/main_page_banner.jpg", href: BANNER_LINK },
-  { image: "https://images.uzum.uz/dbbgpopndubc73cl5ji0/main_page_banner.jpg", href: BANNER_LINK },
-  { image: "https://images.uzum.uz/dbbgqnm7vabc738erh90/main_page_banner.jpg", href: BANNER_LINK },
-  { image: "https://images.uzum.uz/dbbgrlqjv54c73arro90/main_page_banner.jpg", href: BANNER_LINK },
-  { image: "https://images.uzum.uz/dbbgste7vabc738erikg/main_page_banner.jpg", href: BANNER_LINK },
-  { image: "https://images.uzum.uz/db6v97ijv54c73euvcr0/main_page_banner.jpg", href: BANNER_LINK },
-  { image: "https://images.uzum.uz/dbbgtj2jv54c73arrpr0/main_page_banner.jpg", href: BANNER_LINK },
-  { image: "https://images.uzum.uz/dbe6uiaud09c73a7t9l0/main_page_banner.jpg", href: BANNER_LINK },
+export const banners: Banner[] = [
+  { title: "Nestlé Baby&Me", subtitle: "Bolalar ozuqasiga 30% gacha chegirma", color: "#ea580c", productId: 918735, href: "/promo/nestle-baby-me" },
+  { title: "Muddatli to'lov", subtitle: "0% ustama bilan 12 oygacha", color: "#13234a", productId: 100, href: "/category/elektronika" },
+  { title: "Elektronika haftaligi", subtitle: "Noutbuklarga −25% gacha", color: "#1f5fbf", productId: 79, href: "/category/elektronika" },
+  { title: "Go'zallik kunlari", subtitle: "Atir va kosmetika arzon narxda", color: "#c2255c", productId: 6, href: "/category/gozallik" },
+  { title: "Oshxona uchun", subtitle: "Maishiy texnika — ertaga yetkazamiz", color: "#2f7d4f", productId: 51, href: "/category/maishiy-texnika" },
 ];
 
 export const quickCategories = [

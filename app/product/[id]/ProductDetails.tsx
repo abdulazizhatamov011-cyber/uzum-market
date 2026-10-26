@@ -25,14 +25,14 @@ export default function ProductDetails({ product: p }: { product: Product }) {
             <button
               key={src}
               onClick={() => setImg(k)}
-              className={`w-16 h-20 rounded-lg overflow-hidden bg-[#f2f4f7] border-2 ${k === img ? "border-brand" : "border-transparent"}`}
+              className={`w-16 h-20 rounded-lg overflow-hidden bg-surface border-2 ${k === img ? "border-brand" : "border-transparent"}`}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={src} alt="" className="w-full h-full object-contain" />
             </button>
           ))}
         </div>
-        <div className="flex-1 min-w-0 aspect-[3/4] rounded-2xl bg-[#f2f4f7] overflow-hidden">
+        <div className="flex-1 min-w-0 aspect-[3/4] rounded-2xl bg-surface overflow-hidden">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={gallery[img]} alt={p.title} className="w-full h-full object-contain p-6" />
         </div>
@@ -44,7 +44,7 @@ export default function ProductDetails({ product: p }: { product: Product }) {
           <StarIcon /> <span className="text-ink">{p.rating.toFixed(1)}</span> ({formatPrice(p.reviews)} sharhlar) ·{" "}
           {formatPrice(p.reviews * 7)} ta buyurtma
         </div>
-        <h1 className="text-2xl font-semibold mt-2 leading-snug">{p.title}</h1>
+        <h1 className="!font-sans !tracking-normal text-xl sm:text-2xl font-semibold mt-2 leading-snug">{p.title}</h1>
         <dl className="mt-6 grid grid-cols-[140px_1fr] gap-y-3 text-sm">
           {p.brand && (
             <>
@@ -57,14 +57,14 @@ export default function ProductDetails({ product: p }: { product: Product }) {
           <dt className="text-muted">Yetkazib berish</dt>
           <dd>Ertaga, bepul — topshirish punktiga</dd>
           <dt className="text-muted">Sotuvchi</dt>
-          <dd className="text-brand">{p.brand ?? "Uzum"} Store</dd>
+          <dd className="text-brand">{p.brand ?? "Bozorcha"} Store</dd>
         </dl>
         <div className="mt-8">
           <h3 className="font-semibold mb-2">Mahsulot haqida qisqacha</h3>
           <ul className="list-disc pl-5 text-sm text-muted space-y-1">
             <li>Original mahsulot, sifat kafolati bilan</li>
             <li>10 kun ichida qaytarish imkoniyati</li>
-            <li>Uzum Nasiya orqali muddatli to&apos;lov</li>
+            <li>Bozorcha Nasiya orqali muddatli to&apos;lov</li>
           </ul>
         </div>
       </div>
@@ -72,15 +72,15 @@ export default function ProductDetails({ product: p }: { product: Product }) {
       {/* Xarid kartasi */}
       <aside className="md:col-span-2 lg:col-span-1 lg:sticky lg:top-32 self-start rounded-2xl border border-line p-5 shadow-sm">
         <div className="flex items-baseline gap-3">
-          <span className="text-3xl font-bold">{formatPrice(p.price)} so&apos;m</span>
+          <span className="font-display text-3xl font-bold tracking-tight text-brand">{formatPrice(p.price)} so&apos;m</span>
         </div>
         <div className="text-muted line-through text-sm">{formatPrice(p.oldPrice)} so&apos;m</div>
-        <div className="mt-3 rounded-xl bg-[#ffff00]/80 px-3 py-2 text-sm">
+        <div className="mt-3 rounded-2xl bg-surface text-cobalt px-3.5 py-2.5 text-sm">
           Oyiga <b>{formatPrice(monthly(p.price))} so&apos;m</b> dan — muddatli to&apos;lov
         </div>
         <div className="mt-5 flex gap-2">
           {inCart ? (
-            <div className="flex-1 flex items-center justify-between h-12 rounded-xl bg-brand-soft text-brand font-semibold px-2">
+            <div className="flex-1 flex items-center justify-between h-12 rounded-full bg-brand-soft text-brand font-semibold px-2">
               <button className="w-9 h-9 rounded-lg hover:bg-white" onClick={() => setQty(p.id, inCart.qty - 1)}>−</button>
               <Link href="/cart">{inCart.qty} ta savatda</Link>
               <button className="w-9 h-9 rounded-lg hover:bg-white" onClick={() => setQty(p.id, inCart.qty + 1)}>+</button>
@@ -88,7 +88,7 @@ export default function ProductDetails({ product: p }: { product: Product }) {
           ) : (
             <button
               onClick={() => addToCart(p.id)}
-              className="flex-1 h-12 rounded-xl bg-brand text-white font-semibold hover:bg-brand-dark transition"
+              className="flex-1 h-12 rounded-full bg-ink text-white font-semibold hover:bg-[#1d3266] transition"
             >
               Savatga qo&apos;shish
             </button>
@@ -96,7 +96,7 @@ export default function ProductDetails({ product: p }: { product: Product }) {
           <button
             aria-label="Saralangan"
             onClick={() => toggleFavorite(p.id)}
-            className={`w-12 h-12 grid place-items-center rounded-xl border border-line ${fav ? "text-brand" : ""}`}
+            className={`w-12 h-12 grid place-items-center rounded-full border border-line ${fav ? "text-brand" : ""}`}
           >
             <HeartIcon filled={fav} />
           </button>
@@ -106,7 +106,7 @@ export default function ProductDetails({ product: p }: { product: Product }) {
             if (!inCart) addToCart(p.id);
             router.push("/checkout");
           }}
-          className="mt-2 w-full h-12 rounded-xl border border-brand text-brand font-semibold hover:bg-brand-soft transition">
+          className="mt-2 w-full h-12 rounded-full bg-brand text-white font-semibold hover:bg-brand-dark transition">
           Tugmani 1 bosishda xarid qilish
         </button>
         <p className="mt-4 text-sm text-muted">🚚 Ertaga yetkazib beramiz</p>

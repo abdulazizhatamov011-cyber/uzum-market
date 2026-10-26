@@ -1,6 +1,6 @@
 import PageShell from "@/components/PageShell";
 
-export const metadata = { title: "Maxfiylik kelishuvi — Uzum Market" };
+export const metadata = { title: "Maxfiylik kelishuvi — Bozorcha" };
 
 export default function PrivacyPage() {
   return (

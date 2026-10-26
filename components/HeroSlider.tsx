@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { banners } from "@/lib/data";
 import { ChevronLeft, ChevronRight } from "./Icons";
+import BannerSlide from "./BannerSlide";
 
 export default function HeroSlider() {
   return (
@@ -33,7 +34,7 @@ function DesktopSlider() {
 
   return (
     <div
-      className="relative overflow-hidden rounded-2xl aspect-[3/1] bg-[#f2f4f7] group"
+      className="relative overflow-hidden rounded-[28px] aspect-[3/1] bg-surface group"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onTouchStart={(e) => (touchX.current = e.touches[0].clientX)}
@@ -49,44 +50,23 @@ function DesktopSlider() {
         style={{ transform: `translateX(-${i * 100}%)` }}
       >
         {banners.map((b, k) => (
-          <Link key={b.image} href={b.href} className="min-w-full h-full" tabIndex={k === i ? 0 : -1}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={b.image}
-              alt="Uzum aksiyalari, mahsulotlar termasi va xabarlari"
-              referrerPolicy="no-referrer"
-              loading={k === 0 ? "eager" : "lazy"}
-              draggable={false}
-              className="w-full h-full object-cover select-none"
-            />
+          <Link key={b.title} href={b.href} className="min-w-full h-full" tabIndex={k === i ? 0 : -1}>
+            <BannerSlide b={b} eager={k === 0} />
           </Link>
         ))}
       </div>
 
-      <button
-        aria-label="Oldingi"
-        onClick={prev}
-        className="hidden sm:grid absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/40 hover:bg-white/60 backdrop-blur place-items-center text-ink transition"
-      >
-        <ChevronLeft />
-      </button>
-      <button
-        aria-label="Keyingi"
-        onClick={next}
-        className="hidden sm:grid absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/40 hover:bg-white/60 backdrop-blur place-items-center text-ink transition"
-      >
-        <ChevronRight />
-      </button>
-
-      <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 flex items-center gap-1 rounded-full bg-black/10 px-1.5 py-1">
-        {banners.map((b, k) => (
-          <button
-            key={b.image}
-            aria-label={`Banner ${k + 1}`}
-            onClick={() => setI(k)}
-            className={`h-1.5 rounded-full transition-all ${k === i ? "w-4 bg-white" : "w-1.5 bg-white/60"}`}
-          />
-        ))}
+      {/* Pastki o'ng burchak: "joriy / jami" va strelkalar bitta kapsulada */}
+      <div className="absolute right-5 bottom-5 flex items-center gap-1 rounded-full bg-white/95 text-ink p-1 pl-3.5">
+        <span className="font-display text-[13px] font-medium tabular-nums mr-1.5" aria-live="polite">
+          {i + 1} / {n}
+        </span>
+        <button aria-label="Oldingi banner" onClick={prev} className="w-8 h-8 grid place-items-center rounded-full hover:bg-surface">
+          <ChevronLeft className="w-4 h-4" />
+        </button>
+        <button aria-label="Keyingi banner" onClick={next} className="w-8 h-8 grid place-items-center rounded-full bg-ink text-white hover:bg-[#1d3266]">
+          <ChevronRight className="w-4 h-4" />
+        </button>
       </div>
     </div>
   );
@@ -116,16 +96,10 @@ function MobileBanners() {
       className="md:hidden -mx-4 flex gap-2 overflow-x-auto no-scrollbar snap-x snap-mandatory px-[5.5%]"
     >
       {banners.map((b, k) => (
-        <Link key={b.image} href={b.href} className="shrink-0 w-[89%] snap-center">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={b.image}
-            alt="Uzum aksiyalari, mahsulotlar termasi va xabarlari"
-            referrerPolicy="no-referrer"
-            loading={k < 2 ? "eager" : "lazy"}
-            draggable={false}
-            className="w-full aspect-[3/1] rounded-xl object-cover bg-[#f2f4f7]"
-          />
+        <Link key={b.title} href={b.href} className="shrink-0 w-[89%] snap-center">
+          <div className="aspect-[2.2/1] rounded-[20px] overflow-hidden">
+            <BannerSlide b={b} eager={k < 2} phone />
+          </div>
         </Link>
       ))}
     </div>

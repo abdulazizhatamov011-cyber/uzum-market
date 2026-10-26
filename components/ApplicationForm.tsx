@@ -51,8 +51,8 @@ export default function ApplicationForm({ extraLabel, button = "Ariza yuborish" 
         {cities.map((c) => <option key={c}>{c}</option>)}
       </select>
       <input value={extra} onChange={(e) => setExtra(e.target.value)} placeholder={extraLabel} className={inputCls} />
-      {error && <p className="text-sm text-[#ff4d6a]">{error}</p>}
-      <button type="submit" className="w-full h-12 rounded-xl bg-brand text-white font-semibold hover:bg-brand-dark transition">
+      {error && <p className="text-sm text-sale">{error}</p>}
+      <button type="submit" className="w-full h-12 rounded-full bg-brand text-white font-semibold hover:bg-brand-dark transition">
         {button}
       </button>
     </form>

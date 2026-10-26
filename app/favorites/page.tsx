@@ -19,7 +19,7 @@ export default function FavoritesPage() {
           <div className="text-7xl mb-4">💜</div>
           <h2 className="text-xl font-bold">Sizga yoqqanini qo&apos;shing</h2>
           <p className="text-muted mt-2">Mahsulotdagi ♡ belgisini bosing — ular shu yerda saqlanadi</p>
-          <Link href="/" className="inline-block mt-6 rounded-xl bg-brand text-white font-semibold px-8 h-12 leading-[48px]">
+          <Link href="/" className="inline-block mt-6 rounded-full bg-brand text-white font-semibold px-8 h-12 leading-[48px]">
             Bosh sahifa
           </Link>
         </div>

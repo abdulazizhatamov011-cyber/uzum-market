@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import SearchResults from "./SearchResults";
 
-export const metadata = { title: "Qidiruv — Uzum Market" };
+export const metadata = { title: "Qidiruv — Bozorcha" };
 
 export default function SearchPage() {
   return (

@@ -2,8 +2,7 @@ import Link from "next/link";
 import HeroSlider from "@/components/HeroSlider";
 import ProductGrid from "@/components/ProductGrid";
 import WeeklyDeals from "@/components/WeeklyDeals";
-import { ChevronRight } from "@/components/Icons";
-import { products, quickCategories } from "@/lib/data";
+import { categories, products } from "@/lib/data";
 import { nestleProducts } from "@/lib/promo";
 
 // Deterministik "aralashtirish" — server va client bir xil natija beradi
@@ -16,64 +15,65 @@ const weekly = [...nestleProducts].sort((a, b) => b.reviews - a.reviews).slice(0
 
 function SectionTitle({ title, href }: { title: string; href: string }) {
   return (
-    <Link href={href} className="group inline-flex items-center gap-1 mb-4 sm:mb-5">
-      <h2 className="text-[22px] sm:text-[28px] font-bold">{title}</h2>
-      <ChevronRight className="w-6 h-6 transition-transform group-hover:translate-x-1" />
-    </Link>
+    <div className="flex items-end justify-between gap-4 mb-4 sm:mb-5">
+      <h2 className="text-[21px] sm:text-[26px]">{title}</h2>
+      <Link href={href} className="shrink-0 text-sm font-medium text-cobalt hover:underline underline-offset-4">
+        Hammasi
+      </Link>
+    </div>
   );
 }
 
 export default function Home() {
   return (
-    <div className="container-x pt-1 md:pt-2">
+    <div className="container-x pt-3 md:pt-1">
       <HeroSlider />
 
-      <div className="hidden md:grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mt-4">
-        {quickCategories.map((c) => (
-          <Link
-            key={c.label}
-            href={c.href}
-            className="flex items-center gap-3 h-14 rounded-xl bg-[#f2f4f7] px-3 hover:bg-[#e9ecf1] transition"
-          >
-            <span className="text-2xl">{c.icon}</span>
-            <span className="flex-1 text-center text-sm font-medium">{c.label}</span>
-          </Link>
-        ))}
-      </div>
+      {/* Turkumlar — bozor rastalari kabi dumaloq belgilar qatori */}
+      <nav aria-label="Turkumlar" className="-mx-4 mt-5 md:mx-0">
+        <ul className="flex gap-3 sm:gap-5 overflow-x-auto no-scrollbar px-4 md:px-0 md:justify-between">
+          {categories.map((c) => (
+            <li key={c.slug} className="shrink-0">
+              <Link href={`/category/${c.slug}`} className="group flex w-[68px] flex-col items-center gap-1.5 text-center">
+                <span className="grid place-items-center w-[60px] h-[60px] rounded-full bg-surface text-[28px] transition group-hover:bg-brand-soft">
+                  {c.icon}
+                </span>
+                <span className="text-[12px] leading-tight line-clamp-2">{c.name}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
 
       <WeeklyDeals items={weekly} href="/promo/nestle-baby-me" />
 
-      <section className="mt-6 md:mt-10">
-        {/* Telefonda "Mashhur" — tagiga chizilgan tab ko'rinishida */}
-        <div className="md:hidden mb-4 text-center">
-          <span className="inline-block px-6 pb-2 font-medium">Mashhur</span>
-          <div className="h-[3px] rounded-full bg-brand" />
-        </div>
-        <div className="hidden md:block">
-          <SectionTitle title="Mashhur" href="/category/elektronika" />
-        </div>
+      <section className="mt-9">
+        <SectionTitle title="Ko'p sotilayotganlar" href="/category/elektronika" />
         <ProductGrid items={popular} />
       </section>
 
-      <section className="mt-12">
-        <div className="rounded-2xl bg-gradient-to-r from-[#ff3d00] to-[#ff9500] text-white p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <div className="text-sm uppercase tracking-widest opacity-80">Faqat bugun</div>
-            <div className="text-2xl sm:text-3xl font-black">Arzon narxlar kafolati 🔥</div>
-          </div>
-          <Link href="/search?q=" className="self-start sm:self-auto rounded-xl bg-white text-ink font-semibold px-6 h-12 grid place-items-center">
-            Barcha aksiyalar
-          </Link>
+      <section className="mt-12 rounded-[28px] bg-brand-soft px-6 py-7 sm:px-10 sm:py-9 flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+        <div className="max-w-xl">
+          <h2 className="text-[22px] sm:text-[28px] text-ink">Kafolatlangan narx</h2>
+          <p className="mt-2 text-ink/75">
+            Belgisi bor tovarni boshqa joyda arzonroq topsangiz, farqini Bozorcha hisobingizga qaytaramiz.
+          </p>
         </div>
+        <Link
+          href="/search?q="
+          className="self-start sm:self-auto shrink-0 rounded-full bg-ink text-white font-medium px-6 h-12 grid place-items-center hover:bg-[#1d3266]"
+        >
+          Barcha aksiyalar
+        </Link>
       </section>
 
-      <section className="mt-10">
+      <section className="mt-12">
         <SectionTitle title="Katta chegirmalar" href="/search?q=" />
         <ProductGrid items={discounted} />
       </section>
 
       <section className="mt-12">
-        <SectionTitle title="Siz uchun tavsiyalar" href="/search?q=" />
+        <SectionTitle title="Siz uchun tanladik" href="/search?q=" />
         <ProductGrid items={shuffled.slice(10)} step={15} />
       </section>
     </div>

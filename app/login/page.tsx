@@ -119,13 +119,13 @@ export default function LoginPage() {
           {step === "name" && (
             <input autoFocus value={name} onChange={(e) => setName(e.target.value)} placeholder="Ism" className={inputCls} />
           )}
-          {error && <p className="text-sm text-[#ff4d6a] mt-2">{error}</p>}
+          {error && <p className="text-sm text-sale mt-2">{error}</p>}
         </div>
 
         <button
           type="submit"
           disabled={loading}
-          className="mt-5 w-full h-12 rounded-xl bg-brand text-white font-semibold hover:bg-brand-dark transition disabled:opacity-60"
+          className="mt-5 w-full h-12 rounded-full bg-brand text-white font-semibold hover:bg-brand-dark transition disabled:opacity-60"
         >
           {loading ? "Kuting…" : step === "phone" ? "Kod olish" : step === "code" ? "Tasdiqlash" : "Kirish"}
         </button>
