@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-brand: #ea580c;
-  --color-brand-dark: #c2410c;
-  --color-brand-soft: #fff1e6;
+  --color-brand: #13234a;
+  --color-brand-dark: #0b1633;
+  --color-brand-soft: #e6ecf8;
   /* Rishton sopolidan olingan to'q ko'k: matn va ikkinchi darajali rang */
   --color-ink: #13234a;
   --color-muted: #66718a;

@@ -8,7 +8,7 @@ import { CloseIcon } from "@/components/Icons";
 
 type Opt = { id: number; title: string; image: string };
 
-const palette = ["#ea580c", "#13234a", "#1f5fbf", "#c2255c", "#2f7d4f", "#7c3aed", "#0f766e", "#b45309"];
+const palette = ["#13234a", "#16408a", "#1f5fbf", "#c2255c", "#2f7d4f", "#7c3aed", "#0f766e", "#b45309"];
 
 const empty: BannerInput = { title: "", subtitle: "", titleRu: "", subtitleRu: "", color: palette[0], productId: 0, href: "/" };
 

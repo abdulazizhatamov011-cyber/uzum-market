@@ -13,7 +13,7 @@ export default async function SellerPage({ params }: PageProps<"/[lang]/seller">
     <PageShell title={s.title} subtitle={s.subtitle}>
       <div className="grid gap-8 lg:grid-cols-[1fr_400px]">
         <div>
-          <div className="rounded-2xl bg-gradient-to-r from-brand to-[#fb923c] text-white p-8">
+          <div className="rounded-2xl bg-gradient-to-r from-brand to-cobalt text-white p-8">
             <div className="text-3xl sm:text-4xl font-black">{s.hero}</div>
             <p className="mt-2 opacity-90">{s.heroText}</p>
           </div>

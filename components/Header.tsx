@@ -78,8 +78,8 @@ function TopBar() {
         </div>
         <div className="text-white/60 hidden xl:block">{t.header.deliveryNote}</div>
         <div className="flex items-center gap-5">
-          <Link className="text-[#ffb27a] font-medium hover:text-white" href="/seller">{t.header.beSeller}</Link>
-          <Link className="text-[#ffb27a] font-medium hidden lg:inline hover:text-white" href="/open-pickup-point">{t.header.openPoint}</Link>
+          <Link className="text-[#9cb8ff] font-medium hover:text-white" href="/seller">{t.header.beSeller}</Link>
+          <Link className="text-[#9cb8ff] font-medium hidden lg:inline hover:text-white" href="/open-pickup-point">{t.header.openPoint}</Link>
           <Link href="/faq" className="hover:text-white">{t.header.faq}</Link>
           <Link href="/orders" className="hover:text-white">{t.header.myOrders}</Link>
           <div className="relative">

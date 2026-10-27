@@ -37,7 +37,7 @@ export const navLinks = [
 
 // Boshlang'ich bannerlar (bazaga bir marta yoziladi, keyin admin paneldan boshqariladi)
 export const seedBanners: Omit<Banner, "id">[] = [
-  { title: "Nestlé Baby&Me", subtitle: "Bolalar ozuqasiga 30% gacha chegirma", titleRu: "Nestlé Baby&Me", subtitleRu: "Скидки до 30% на детское питание", color: "#ea580c", productId: 918735, href: "/promo/nestle-baby-me" },
+  { title: "Nestlé Baby&Me", subtitle: "Bolalar ozuqasiga 30% gacha chegirma", titleRu: "Nestlé Baby&Me", subtitleRu: "Скидки до 30% на детское питание", color: "#16408a", productId: 918735, href: "/promo/nestle-baby-me" },
   { title: "Muddatli to'lov", subtitle: "0% ustama bilan 12 oygacha", titleRu: "Рассрочка", subtitleRu: "До 12 месяцев без переплаты", color: "#13234a", productId: 100, href: "/category/elektronika" },
   { title: "Elektronika haftaligi", subtitle: "Noutbuklarga −25% gacha", titleRu: "Неделя электроники", subtitleRu: "Ноутбуки со скидкой до −25%", color: "#1f5fbf", productId: 79, href: "/category/elektronika" },
   { title: "Go'zallik kunlari", subtitle: "Atir va kosmetika arzon narxda", titleRu: "Дни красоты", subtitleRu: "Парфюм и косметика по низким ценам", color: "#c2255c", productId: 6, href: "/category/gozallik" },

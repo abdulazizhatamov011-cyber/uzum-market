@@ -26,14 +26,14 @@ export default function WeeklyDeals({ items, href }: { items: Product[]; href: s
     <section className="-mx-4 md:mx-0 mt-7 rounded-[28px] bg-ink py-6 md:py-7">
       <div className="px-5 md:px-7 flex items-start gap-3">
         <div className="flex-1 min-w-0">
-          <Link href={href} className="inline-flex items-center gap-1 text-white hover:text-[#ffb27a]">
+          <Link href={href} className="inline-flex items-center gap-1 text-white hover:text-[#9cb8ff]">
             <h2 className="text-[21px] sm:text-[26px]">{t.home.weekly}</h2>
             <ChevronRight className="w-5 h-5 shrink-0" />
           </Link>
           <p className="mt-1 text-white/70 text-[14px]">{t.home.weeklySub}</p>
         </div>
         {days !== null && (
-          <span className="shrink-0 rounded-full bg-brand text-white text-[13px] font-medium px-3 py-1.5">
+          <span className="shrink-0 rounded-full bg-white text-ink text-[13px] font-medium px-3 py-1.5">
             {t.home.daysLeft(days)}
           </span>
         )}

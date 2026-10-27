@@ -16,16 +16,16 @@ function LostBag() {
 
       <g className="anim-bob">
         {/* Dasta */}
-        <path d="M84 104V80a34 34 0 0 1 68 0v24" fill="none" stroke="#c2410c" strokeWidth="10" strokeLinecap="round" />
+        <path d="M84 104V80a34 34 0 0 1 68 0v24" fill="none" stroke="#16408a" strokeWidth="10" strokeLinecap="round" />
         {/* Sumka */}
-        <rect x="40" y="96" width="156" height="160" rx="26" fill="#ea580c" />
+        <rect x="40" y="96" width="156" height="160" rx="26" fill="#1f5fbf" />
         <rect x="40" y="96" width="156" height="22" rx="11" fill="#fff" opacity=".12" />
-        <circle cx="84" cy="114" r="6" fill="#c2410c" />
-        <circle cx="152" cy="114" r="6" fill="#c2410c" />
+        <circle cx="84" cy="114" r="6" fill="#16408a" />
+        <circle cx="152" cy="114" r="6" fill="#16408a" />
 
         {/* Qoshlar — hayron ko'rinish */}
-        <path d="M76 140q14-10 28-4" fill="none" stroke="#7c2d12" strokeWidth="4" strokeLinecap="round" />
-        <path d="M132 136q14-6 28 4" fill="none" stroke="#7c2d12" strokeWidth="4" strokeLinecap="round" />
+        <path d="M76 140q14-10 28-4" fill="none" stroke="#0b1633" strokeWidth="4" strokeLinecap="round" />
+        <path d="M132 136q14-6 28 4" fill="none" stroke="#0b1633" strokeWidth="4" strokeLinecap="round" />
         {/* Ko'zlar */}
         <circle cx="92" cy="168" r="18" fill="#fff" />
         <circle cx="144" cy="168" r="18" fill="#fff" />
@@ -36,7 +36,7 @@ function LostBag() {
           <circle cx="147" cy="167" r="2.6" fill="#fff" />
         </g>
         {/* Og'iz: "o" */}
-        <ellipse cx="118" cy="214" rx="9" ry="11" fill="#7c2d12" />
+        <ellipse cx="118" cy="214" rx="9" ry="11" fill="#0b1633" />
 
         {/* Yorliq ilgagi */}
         <path d="M194 116q14-6 20 4" fill="none" stroke="#13234a" strokeWidth="3" strokeLinecap="round" />
@@ -48,7 +48,7 @@ function LostBag() {
           <text x="214" y="214" textAnchor="middle" fill="#fff" fontFamily="var(--font-unbounded)" fontWeight="700" fontSize="25">
             404
           </text>
-          <text x="214" y="236" textAnchor="middle" fill="#ffb27a" fontFamily="var(--font-onest)" fontSize="11">
+          <text x="214" y="236" textAnchor="middle" fill="#9cb8ff" fontFamily="var(--font-onest)" fontSize="11">
             {t.notFound.tag}
           </text>
         </g>
